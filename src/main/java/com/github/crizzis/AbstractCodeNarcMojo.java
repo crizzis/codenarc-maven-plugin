@@ -1,25 +1,7 @@
 package com.github.crizzis;
 
-/*
- * Copyright 2001-2005 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import lombok.Getter;
 import org.apache.maven.model.FileSet;
-import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -29,22 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static org.apache.maven.plugins.annotations.LifecyclePhase.SITE;
-import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE;
-
-/**
- * Create a CodeNarc report, and optionally fail the build if specified quality criteria are not met
- */
 @Getter
-@Mojo(name = "codenarc", defaultPhase = SITE, requiresDependencyResolution = COMPILE)
-@Execute(phase = SITE, goal = "codenarc")
-public class CodeNarcMojo extends AbstractMavenReport {
-
-    /**
-     * Location where the generated HTML report will be created
-     */
-    @Parameter(property = "codenarc.outputDirectory", defaultValue = "${project.reporting.outputDirectory}")
-    private File outputDirectory;
+public class AbstractCodeNarcMojo extends AbstractMavenReport {
 
     /**
      * Location where the generated XML report will be created
@@ -65,7 +33,7 @@ public class CodeNarcMojo extends AbstractMavenReport {
     private List<String> includes = List.of("**/*.groovy");
 
     /**
-     * A collection of Ant-style file patterns specifying the files to exclude from analysis. Takes precedence over {@link CodeNarcMojo#includes}
+     * A collection of Ant-style file patterns specifying the files to exclude from analysis. Takes precedence over {@link CodeNarcVerifyMojo#includes}
      */
     @Parameter(property = "codenarc.exclude")
     private List<String> excludes;
@@ -137,18 +105,31 @@ public class CodeNarcMojo extends AbstractMavenReport {
     @Parameter(property = "codenarc.maxPriority3Violations", defaultValue = "-1")
     private int maxPriority3Violations;
 
-    protected void executeReport(Locale locale) throws MavenReportException {
-
+    protected File getXmlOutputFile() {
+        return new File(getXmlOutputDirectory(), "codenarc.xml");
     }
 
+    @Override
+    protected void executeReport(Locale locale) throws MavenReportException {
+        throw new MavenReportException("Report generation is not supported");
+    }
+
+    @Override
+    public boolean canGenerateReport() {
+        return false;
+    }
+
+    @Override
     public String getOutputName() {
         return "codenarc";
     }
 
+    @Override
     public String getName(Locale locale) {
         return ResourceBundle.getBundle("codenarc", locale).getString("report.codenarc.name");
     }
 
+    @Override
     public String getDescription(Locale locale) {
         return ResourceBundle.getBundle("codenarc", locale).getString("report.codenarc.description");
     }
