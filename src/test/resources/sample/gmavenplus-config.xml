@@ -1,0 +1,9 @@
+<configuration>
+    <source>
+        <directory>${project.basedir}/src/additional</directory>
+        <includes>
+            <include>groovy/**/*.groovy</include>
+            <include>gvy/**/*.gvy</include>
+        </includes>
+    </source>
+</configuration>

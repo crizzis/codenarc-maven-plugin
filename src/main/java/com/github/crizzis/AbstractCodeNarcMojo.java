@@ -1,18 +1,18 @@
 package com.github.crizzis;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Getter
-public class AbstractCodeNarcMojo extends AbstractMavenReport {
+@Setter
+public class AbstractCodeNarcMojo extends FailableMavenReport {
 
     /**
      * Location where the generated XML report will be created
@@ -27,15 +27,20 @@ public class AbstractCodeNarcMojo extends AbstractMavenReport {
     private boolean skip;
 
     /**
-     * A collection of Ant-style file patterns specifying the files to analyze
+     * A collection of Ant-style file patterns specifying the files to analyze.
+     * The patterns defined here are appended to the inclusion rules of any custom
+     * {@link AbstractCodeNarcMojo#sources}/{@link AbstractCodeNarcMojo#testSources} provided
      */
-    @Parameter(property = "codenrc.includes")
+    @Parameter(property = "codenarc.includes")
     private List<String> includes = List.of("**/*.groovy");
 
     /**
-     * A collection of Ant-style file patterns specifying the files to exclude from analysis. Takes precedence over {@link CodeNarcVerifyMojo#includes}
+     * A collection of Ant-style file patterns specifying the files to exclude from analysis.
+     * Takes precedence over {@link CodeNarcVerifyMojo#includes}.
+     * The patterns defined here are appended to the exclusion rules of any custom
+     * {@link AbstractCodeNarcMojo#sources}/{@link AbstractCodeNarcMojo#testSources} provided
      */
-    @Parameter(property = "codenarc.exclude")
+    @Parameter(property = "codenarc.excludes")
     private List<String> excludes;
 
     /**
@@ -58,7 +63,7 @@ public class AbstractCodeNarcMojo extends AbstractMavenReport {
      * The filesets containing source files to be analyzed.
      *
      * Defaults to the source configuration of <a href="https://groovy.github.io/GMavenPlus/">gmavenplus-plugin</a> if configured as part of the build;
-     * otherwise, uses {@code ${project.basedir}/src/main/groovy/**&#47;*.groovy} as the default
+     * otherwise, uses {@code ${project.basedir}/src/main/groovy/**&#47;*.groovy} as the default.
      */
     @Parameter(property = "codenarc.sources")
     private FileSet[] sources;
@@ -110,27 +115,12 @@ public class AbstractCodeNarcMojo extends AbstractMavenReport {
     }
 
     @Override
-    protected void executeReport(Locale locale) throws MavenReportException {
+    protected void doExecuteReport(Locale locale) throws MavenReportException {
         throw new MavenReportException("Report generation is not supported");
     }
 
     @Override
     public boolean canGenerateReport() {
         return false;
-    }
-
-    @Override
-    public String getOutputName() {
-        return "codenarc";
-    }
-
-    @Override
-    public String getName(Locale locale) {
-        return ResourceBundle.getBundle("codenarc", locale).getString("report.codenarc.name");
-    }
-
-    @Override
-    public String getDescription(Locale locale) {
-        return ResourceBundle.getBundle("codenarc", locale).getString("report.codenarc.description");
     }
 }
