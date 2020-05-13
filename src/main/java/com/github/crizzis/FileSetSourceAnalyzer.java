@@ -38,7 +38,7 @@ public class FileSetSourceAnalyzer extends AbstractSourceAnalyzer {
         FilesystemSourceAnalyzer analyzer = new FilesystemSourceAnalyzer();
         analyzer.setBaseDirectory(fileSet.getDirectory());
         analyzer.setIncludes(String.join(",", fileSet.getIncludes()));
-        analyzer.setExcludes(String.join(",", fileSet.getIncludes()));
+        analyzer.setExcludes(String.join(",", fileSet.getExcludes()));
         return (Results) analyzer.analyze(ruleSet).getChildren().get(0);
     }
 

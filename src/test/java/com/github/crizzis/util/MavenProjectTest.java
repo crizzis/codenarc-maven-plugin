@@ -16,4 +16,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface MavenProjectTest {
 
     String value();
+
+    boolean autoClean() default true;
 }

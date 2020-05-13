@@ -1,10 +1,12 @@
 package com.github.crizzis.util;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.it.util.ResourceExtractor;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.jupiter.api.extension.*;
 
 import java.io.File;
@@ -33,8 +35,18 @@ public class MavenProjectTestExtension implements BeforeTestExecutionCallback, A
                 context.getRequiredTestClass(),
                 getTestResourceProjectRoot(context));
         methodScopedStore.put(PROJECT_ROOT, projectRoot);
-        methodScopedStore.put(VERIFIER, new Verifier(projectRoot.getAbsolutePath()));
-        methodScopedStore.put(MODEL, new MavenXpp3Reader().read(new FileReader(new File(projectRoot, "pom.xml"))));
+        methodScopedStore.put(VERIFIER, prepareVerifier(projectRoot, context));
+        methodScopedStore.put(MODEL, parsePomXml(projectRoot));
+    }
+
+    private Verifier prepareVerifier(File projectRoot, ExtensionContext context) throws VerificationException {
+        Verifier verifier = new Verifier(projectRoot.getAbsolutePath());
+        verifier.setAutoclean(context.getRequiredTestMethod().getAnnotation(MavenProjectTest.class).autoClean());
+        return verifier;
+    }
+
+    private Model parsePomXml(File projectRoot) throws IOException, XmlPullParserException {
+        return new MavenXpp3Reader().read(new FileReader(new File(projectRoot, "pom.xml")));
     }
 
     private String getTestResourceProjectRoot(ExtensionContext context) {
