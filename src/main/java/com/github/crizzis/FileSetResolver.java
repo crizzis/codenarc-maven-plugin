@@ -19,7 +19,7 @@ import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 
 @RequiredArgsConstructor
 @Builder
-class SourceResolver {
+class FileSetResolver {
 
     private static final String DEFAULT_TEST_FILE_SET = "src/test/groovy";
     private static final String DEFAULT_MAIN_FILE_SET = "src/main/groovy";
@@ -94,7 +94,7 @@ class SourceResolver {
     }
 
     @SuppressWarnings("unused")
-    static class SourceResolverBuilder {
+    static class FileSetResolverBuilder {
 
         public List<FileSet> resolveFileSets() {
             return build().resolveFileSets();

@@ -1,7 +1,5 @@
-package com.github.crizzis;
-
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Copyright 2020 Krzysztof Sierszeń
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +13,7 @@ package com.github.crizzis;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.crizzis;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,12 +24,15 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 import org.codenarc.CodeNarcRunner;
 import org.codenarc.results.Results;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -107,13 +109,14 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo {
     private Results reconstructFromExistingReport() throws MojoExecutionException {
         File outputFile = getXmlOutputFile();
         try {
+            getLog().info("Existing CodeNarc report XML found, parsing");
             return codeNarcXmlParser.reconstruct(outputFile);
         } catch (IOException e) {
             throw new MojoExecutionException(String.format("Could not read: %s", outputFile.getAbsolutePath()), e);
         }
     }
 
-    private CodeNarcRunner obtainCodeNarcRunner() {
+    private CodeNarcRunner obtainCodeNarcRunner() throws MojoExecutionException {
         CodeNarcConfig config = CodeNarcConfig.builder()
                 .outputFile(getXmlOutputFile())
                 .fileSets(resolveFileSets())
@@ -123,10 +126,21 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo {
         return codeNarcRunnerFactory.newCodeNarcRunner(config);
     }
 
-    private List<String> resolveRuleSets() {
-        return Stream.concat(safeToStream(getDefaultRuleSets()), safeToStream(getAdditionalRuleSets())
-                .map(File::toURI)
-                .map(Object::toString)).collect(Collectors.toList());
+    private List<String> resolveRuleSets() throws MojoExecutionException {
+        List<String> rulesets = Stream.concat(
+                safeToStream(getDefaultRuleSets()),
+                Arrays.stream(getAdditionalRuleSetUrls()).map(Object::toString))
+                .collect(Collectors.toList());
+        getLog().info("Using rule sets: " + String.join(", ", rulesets));
+        return rulesets;
+    }
+
+    private URL[] getAdditionalRuleSetUrls() throws MojoExecutionException {
+        try {
+            return FileUtils.toURLs(getAdditionalRuleSets());
+        } catch (IOException e) {
+            throw new MojoExecutionException(String.format("Cannot convert files: %s to URLs", getAdditionalRuleSets()));
+        }
     }
 
     private <T> Stream<T> safeToStream(Collection<T> collection) {
@@ -136,17 +150,20 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo {
     }
 
     private List<FileSet> resolveFileSets() {
-        return SourceResolver.builder()
+        List<FileSet> fileSets = FileSetResolver.builder()
+                .project(project)
+                .session(session)
                 .sources(getSources())
                 .testSources(getTestSources())
                 .pluginIntegrations(getCompilerIntegrations())
-                .project(project)
-                .session(session)
                 .includeMain(isIncludeMain())
                 .includeTests(isIncludeTests())
                 .includes(getIncludes())
                 .excludes(getExcludes())
                 .resolveFileSets();
+        getLog().info("Resolved filesets: ");
+        fileSets.forEach(fileSet -> getLog().info(fileSet.toString()));
+        return fileSets;
     }
 
     private boolean shouldRun() {
@@ -172,6 +189,7 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo {
 
     private Results tryExecuteCheck(CodeNarcRunner runner) throws MojoExecutionException {
         try {
+            getLog().info("Executing CodeNarc analysis");
             return runner.execute();
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to execute CodeNarc analysis", e);

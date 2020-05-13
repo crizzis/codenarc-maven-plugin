@@ -1,2 +1,3 @@
-/.idea/
-/codenarc-maven-plugin.iml
+**.iml
+**/.idea/
+**/target/

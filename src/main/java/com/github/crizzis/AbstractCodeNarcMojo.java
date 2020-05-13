@@ -31,7 +31,7 @@ public class AbstractCodeNarcMojo extends FailableMavenReport {
      * The patterns defined here are appended to the inclusion rules of any custom
      * {@link AbstractCodeNarcMojo#sources}/{@link AbstractCodeNarcMojo#testSources} provided
      */
-    @Parameter(property = "codenarc.includes")
+    @Parameter(property = "codenarc.includes", defaultValue = "**/*.groovy")
     private List<String> includes = List.of("**/*.groovy");
 
     /**
@@ -49,15 +49,16 @@ public class AbstractCodeNarcMojo extends FailableMavenReport {
      * Defaults to <a href="https://codenarc.github.io/CodeNarc/codenarc-rules-basic.html">rulesets/basic.xml</a>,
      * <a href="https://codenarc.github.io/CodeNarc/codenarc-rules-exceptions.html">rulesets/exceptions.xml</a>,
      * <a href="https://codenarc.github.io/CodeNarc/codenarc-rules-imports.html">rulesets/imports.xml</a>
+     *
+     * @parameter property="codenarc.defaultRulesets"
      */
-    @Parameter(property = "codenarc.defaultRulesetFiles")
     private List<String> defaultRuleSets = List.of("rulesets/basic.xml", "rulesets/exceptions.xml", "rulesets/imports.xml");
 
     /**
      * A list of custom CodeNarc ruleset files to use
      */
     @Parameter(property = "codenarc.additionalRulesets")
-    private List<File> additionalRuleSets;
+    private File[] additionalRuleSets = new File[0];
 
     /**
      * The filesets containing source files to be analyzed.

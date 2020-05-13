@@ -323,10 +323,10 @@ class CodeNarcVerifyMojoTest {
         File firstCustomFile = new File("custom/ruleset1.xml");
         File secondCustomFile = new File("custom/ruleset2.xml");
         mojo.setDefaultRuleSets(List.of("rulesets/exceptions.xml"));
-        mojo.setAdditionalRuleSets(List.of(
+        mojo.setAdditionalRuleSets(new File[] {
                 firstCustomFile,
                 secondCustomFile
-        ));
+        });
 
         //when
         mojo.execute();
