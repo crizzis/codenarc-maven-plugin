@@ -50,8 +50,9 @@ public class AbstractCodeNarcMojo extends FailableMavenReport {
      * <a href="https://codenarc.github.io/CodeNarc/codenarc-rules-exceptions.html">rulesets/exceptions.xml</a>,
      * <a href="https://codenarc.github.io/CodeNarc/codenarc-rules-imports.html">rulesets/imports.xml</a>
      *
-     * @parameter property="codenarc.defaultRulesets"
      */
+    @Parameter(property = "codenarc.defaultRuleSets",
+            defaultValue = "rulesets/basic.xml,rulesets/exceptions.xml,rulesets/imports.xml")
     private List<String> defaultRuleSets = List.of("rulesets/basic.xml", "rulesets/exceptions.xml", "rulesets/imports.xml");
 
     /**
