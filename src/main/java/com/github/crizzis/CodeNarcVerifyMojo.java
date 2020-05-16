@@ -48,7 +48,7 @@ import static org.apache.maven.plugins.annotations.ResolutionScope.TEST;
 @Getter
 @Setter
 @Mojo(name = "verify", defaultPhase = VERIFY, requiresDependencyResolution = TEST)
-public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo {
+public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo implements AnalysisScopeConfig {
 
     private static final int PRIORITY_ONE = 1;
     private static final int PRIORITY_TWO = 2;
@@ -153,13 +153,8 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo {
         List<FileSet> fileSets = FileSetResolver.builder()
                 .project(project)
                 .session(session)
-                .sources(getSources())
-                .testSources(getTestSources())
                 .pluginIntegrations(getCompilerIntegrations())
-                .includeMain(isIncludeMain())
-                .includeTests(isIncludeTests())
-                .includes(getIncludes())
-                .excludes(getExcludes())
+                .scopeConfig(this)
                 .resolveFileSets();
         getLog().info("Resolved filesets: ");
         fileSets.forEach(fileSet -> getLog().info(fileSet.toString()));

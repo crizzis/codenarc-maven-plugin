@@ -24,26 +24,21 @@ class FileSetResolver {
     private static final String DEFAULT_TEST_FILE_SET = "src/test/groovy";
     private static final String DEFAULT_MAIN_FILE_SET = "src/main/groovy";
 
-    private final boolean includeMain;
-    private final boolean includeTests;
-    private final FileSet[] sources;
-    private final FileSet[] testSources;
-    private final List<String> includes;
-    private final List<String> excludes;
+    private final AnalysisScopeConfig scopeConfig;
     private final Collection<GroovyCompilerPluginIntegration> pluginIntegrations;
     private final MavenProject project;
     private final MavenSession session;
 
     List<FileSet> resolveFileSets() {
         return Lists.newArrayList(Iterables.concat(
-                includeMain ? filterFileSets(obtainEffectiveMainSources()) : emptyList(),
-                includeTests ? filterFileSets(obtainEffectiveTestSources()) : emptyList()
+                scopeConfig.isIncludeMain() ? filterFileSets(obtainEffectiveMainSources()) : emptyList(),
+                scopeConfig.isIncludeTests() ? filterFileSets(obtainEffectiveTestSources()) : emptyList()
         ));
     }
 
     private FileSet[] obtainEffectiveTestSources() {
         return obtainEffectiveSourcesFromIntegration(integration -> integration.getTestSources(project.getBuild(), session))
-                .orElseGet(() -> obtainEffectiveSourcesFromConfig(testSources, DEFAULT_TEST_FILE_SET));
+                .orElseGet(() -> obtainEffectiveSourcesFromConfig(scopeConfig.getTestSources(), DEFAULT_TEST_FILE_SET));
     }
 
     private Optional<FileSet[]> obtainEffectiveSourcesFromIntegration(Function<GroovyCompilerPluginIntegration, Optional<FileSet[]>> getter) {
@@ -55,7 +50,7 @@ class FileSetResolver {
 
     private FileSet[] obtainEffectiveMainSources() {
         return obtainEffectiveSourcesFromIntegration(integration -> integration.getSources(project.getBuild(), session))
-                .orElseGet(() -> obtainEffectiveSourcesFromConfig(sources, DEFAULT_MAIN_FILE_SET));
+                .orElseGet(() -> obtainEffectiveSourcesFromConfig(scopeConfig.getSources(), DEFAULT_MAIN_FILE_SET));
     }
 
     private FileSet[] obtainEffectiveSourcesFromConfig(FileSet[] declaredSources, String defaultDirectory) {
@@ -79,8 +74,8 @@ class FileSetResolver {
 
     private FileSet getFilteredFileSetCopy(FileSet source) {
         FileSet copy = source.clone();
-        copy.setIncludes(concatDistinct(copy.getIncludes(), includes));
-        copy.setExcludes(concatDistinct(copy.getExcludes(), excludes));
+        copy.setIncludes(concatDistinct(copy.getIncludes(), scopeConfig.getIncludes()));
+        copy.setExcludes(concatDistinct(copy.getExcludes(), scopeConfig.getExcludes()));
         return copy;
     }
 
