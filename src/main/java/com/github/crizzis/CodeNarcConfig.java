@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 public class CodeNarcConfig {
 
+    private final String projectName;
     private final List<FileSet> fileSets;
     private final File outputFile;
     private final boolean generateXmlReport;

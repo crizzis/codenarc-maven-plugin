@@ -32,12 +32,14 @@ class VerifyGoalIntegrationIT {
     }
 
     @MavenProjectTest("/projects/verify-minimal-config-no-violations")
-    void verifyMinimalConfig_shouldSucceed(Verifier verifier) throws VerificationException {
+    void verifyMinimalConfig_shouldSucceed(Verifier verifier, @ProjectRoot File projectRoot) throws Exception {
         //when
         verifier.executeGoal("verify");
 
         //then
         verifier.assertFilePresent("target/CodeNarc.xml");
+        Document codeNarcReport = parseXml(projectRoot, "target/CodeNarc.xml");
+        assertThat(codeNarcReport, hasProjectName("verify-minimal-config-no-violations"));
         verifier.verifyTextInLog("CodeNarc completed: (p1=0; p2=0; p3=0)");
         verifier.verifyErrorFreeLog();
     }
@@ -78,6 +80,10 @@ class VerifyGoalIntegrationIT {
 
     private Matcher<Node> includesSourceDirectory(int index, String sourceDirectory) {
         return hasXPath("/CodeNarc/Project/SourceDirectory[" + index + "]", equalTo(sourceDirectory));
+    }
+
+    private Matcher<Node> hasProjectName(String projectName) {
+        return hasXPath("/CodeNarc/Project/@title", equalTo(projectName));
     }
 
     private Matcher<Node> includesFile(String filename) {

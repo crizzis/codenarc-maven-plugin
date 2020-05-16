@@ -118,6 +118,7 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo implements Analysis
 
     private CodeNarcRunner obtainCodeNarcRunner() throws MojoExecutionException {
         CodeNarcConfig config = CodeNarcConfig.builder()
+                .projectName(project.getName())
                 .outputFile(getXmlOutputFile())
                 .fileSets(resolveFileSets())
                 .ruleSets(resolveRuleSets())

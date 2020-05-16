@@ -23,6 +23,7 @@ public class CodeNarcRunnerFactory {
 
     private void configureXmlOutput(CodeNarcConfig config, CodeNarcRunner runner) {
         XmlReportWriter xmlReportWriter = new XmlReportWriter();
+        xmlReportWriter.setTitle(config.getProjectName());
         xmlReportWriter.setOutputFile(config.getOutputFile().getAbsolutePath());
         runner.setReportWriters(List.of(xmlReportWriter));
     }

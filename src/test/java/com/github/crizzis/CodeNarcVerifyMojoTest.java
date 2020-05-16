@@ -39,6 +39,7 @@ import static org.mockito.Mockito.*;
 @DisplayNameGeneration(Phrasify.class)
 class CodeNarcVerifyMojoTest {
 
+    public static final String PROJECT_NAME = "example_project";
     private CodeNarcRunnerFactory codeNarcRunnerFactory = mock(CodeNarcRunnerFactory.class);
     private CodeNarcRunner codeNarcRunner = mock(CodeNarcRunner.class);
     private CodeNarcXmlParser codeNarcXmlParser = mock(CodeNarcXmlParser.class);
@@ -178,6 +179,15 @@ class CodeNarcVerifyMojoTest {
         //when, then
         MojoExecutionException executionException = assertThrows(MojoExecutionException.class, () -> mojo.execute());
         assertEquals(executionException.getCause(), codeNarcException);
+    }
+
+    @Test
+    void execute_shouldConfigureProjectTitleCorrectly() throws MojoFailureException, MojoExecutionException {
+        //when
+        mojo.execute();
+
+        //then
+        assertEquals(config.getValue().getProjectName(), PROJECT_NAME);
     }
 
     @Test
@@ -357,7 +367,9 @@ class CodeNarcVerifyMojoTest {
         CodeNarcVerifyMojo mojo = new CodeNarcVerifyMojo(codeNarcRunnerFactory, codeNarcXmlParser, List.of(compilerPluginIntegration));
         mojo.setIgnoreExistingReport(true);
         mojo.setXmlOutput(true);
-        mojo.setProject(new MavenProject());
+        MavenProject project = new MavenProject();
+        project.setName(PROJECT_NAME);
+        mojo.setProject(project);
         return mojo;
     }
 
