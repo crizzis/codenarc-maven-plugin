@@ -1,0 +1,18 @@
+<?xml version='1.0'?>
+<CodeNarc url='http://www.codenarc.org' version='0.27.0'>
+    <Report timestamp='2020-01-03, 10:28:35'/>
+    <Project title='sample-project' />
+    <PackageSummary totalFiles='1' filesWithViolations='1' priority1='0' priority2='1' priority3='0'/>
+    <Package path='' totalFiles='1' filesWithViolations='1' priority1='0' priority2='1' priority3='0'>
+        <File name='SampleApplication.groovy'>
+            <Violation ruleName='UnusedPrivateField' priority='2' lineNumber='18'>
+                <SourceLine>
+                    <![CDATA[private TestConsumer testConsumer]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[The field testConsumer is not used within the class SampleApplication]]>
+                </Message>
+            </Violation>
+        </File>
+    </Package>
+</CodeNarc>

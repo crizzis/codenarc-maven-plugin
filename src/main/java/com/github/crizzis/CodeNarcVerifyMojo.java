@@ -110,9 +110,9 @@ public class CodeNarcVerifyMojo extends AbstractCodeNarcMojo implements Analysis
         File outputFile = getXmlOutputFile();
         try {
             getLog().info("Existing CodeNarc report XML found, parsing");
-            return codeNarcXmlParser.reconstruct(outputFile);
-        } catch (IOException e) {
-            throw new MojoExecutionException(String.format("Could not read: %s", outputFile.getAbsolutePath()), e);
+            return codeNarcXmlParser.parse(outputFile);
+        } catch (CodeNarcXmlParser.XmlParserException e) {
+            throw new MojoExecutionException(String.format("Could not parse: %s", outputFile.getAbsolutePath()), e);
         }
     }
 

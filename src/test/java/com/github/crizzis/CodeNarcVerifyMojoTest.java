@@ -20,7 +20,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -69,11 +68,11 @@ class CodeNarcVerifyMojoTest {
     }
 
     @Test
-    void execute_shouldRelyOnPreExistingAnalysis_whenIgnoreExistingReportIsFalse() throws IOException, URISyntaxException {
+    void execute_shouldRelyOnPreExistingAnalysis_whenIgnoreExistingReportIsFalse() throws Exception {
         //given
         File xmlOutput = new File(resource("sample/CodeNarc.xml").toURI());
         Results results = resultsWithViolationCounts(3, 0, 0);
-        doReturn(results).when(codeNarcXmlParser).reconstruct(xmlOutput);
+        doReturn(results).when(codeNarcXmlParser).parse(xmlOutput);
         mojo.setIgnoreExistingReport(false);
         mojo.setXmlOutputDirectory(xmlOutput.getParentFile());
         mojo.setMaxPriority1Violations(2);
@@ -83,7 +82,7 @@ class CodeNarcVerifyMojoTest {
     }
 
     @Test
-    void execute_shouldPerformAnalysis_whenIgnoreExistingReportIsTrue() throws URISyntaxException, MojoFailureException, MojoExecutionException {
+    void execute_shouldPerformAnalysis_whenIgnoreExistingReportIsTrue() throws Exception {
         //given
         mockViolations(3, 0, 0);
         File xmlOutput = new File(resource("sample/CodeNarc.xml").toURI());
