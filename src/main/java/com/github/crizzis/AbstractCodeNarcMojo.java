@@ -113,7 +113,7 @@ public class AbstractCodeNarcMojo extends FailableMavenReport {
     private int maxPriority3Violations;
 
     protected File getXmlOutputFile() {
-        return new File(getXmlOutputDirectory(), "codenarc.xml");
+        return new File(getXmlOutputDirectory(), "CodeNarc.xml");
     }
 
     @Override

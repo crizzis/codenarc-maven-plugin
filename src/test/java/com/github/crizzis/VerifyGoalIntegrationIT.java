@@ -7,7 +7,6 @@ import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.Tag;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -22,15 +21,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Tag("integration-test")
 @DisplayNameGeneration(Phrasify.class)
-class VerifyGoalIntegrationTest {
+class VerifyGoalIntegrationIT {
 
     private static final DocumentBuilderFactory XML_FACTORY = DocumentBuilderFactory.newDefaultInstance();
 
     private DocumentBuilder xmlBuilder = XML_FACTORY.newDocumentBuilder();
 
-    VerifyGoalIntegrationTest() throws ParserConfigurationException {
+    VerifyGoalIntegrationIT() throws ParserConfigurationException {
     }
 
     @MavenProjectTest("/projects/verify-minimal-config-no-violations")
@@ -39,7 +37,7 @@ class VerifyGoalIntegrationTest {
         verifier.executeGoal("verify");
 
         //then
-        verifier.assertFilePresent("target/codenarc.xml");
+        verifier.assertFilePresent("target/CodeNarc.xml");
         verifier.verifyTextInLog("CodeNarc completed: (p1=0; p2=0; p3=0)");
         verifier.verifyErrorFreeLog();
     }
@@ -53,8 +51,8 @@ class VerifyGoalIntegrationTest {
         verifier.verifyTextInLog("CodeNarc completed: (p1=0; p2=5; p3=0)");
         verifier.verifyTextInLog("totalPriority2Violations exceeded threshold of 3 errors with 5");
 
-        verifier.assertFilePresent("target/codenarc.xml");
-        Document codeNarcReport = parseXml(projectRoot, "target/codenarc.xml");
+        verifier.assertFilePresent("target/CodeNarc.xml");
+        Document codeNarcReport = parseXml(projectRoot, "target/CodeNarc.xml");
         assertThat(codeNarcReport, includesSourceDirectory(1, "src/main/groovy"));
     }
 
@@ -69,8 +67,8 @@ class VerifyGoalIntegrationTest {
         verifier.verifyTextInLog("custom.xml");
         verifier.verifyTextInLog("CodeNarc completed: (p1=0; p2=6; p3=10)");
 
-        verifier.assertFilePresent("target/reports/codenarc.xml");
-        Document codeNarcReport = parseXml(projectRoot, "target/reports/codenarc.xml");
+        verifier.assertFilePresent("target/reports/CodeNarc.xml");
+        Document codeNarcReport = parseXml(projectRoot, "target/reports/CodeNarc.xml");
         assertThat(codeNarcReport, includesSourceDirectory(1, "src/main/groovy"));
         assertThat(codeNarcReport, includesSourceDirectory(2, "src/main/additional"));
         assertThat(codeNarcReport, includesSourceDirectory(3, "src/test/groovy"));

@@ -70,7 +70,7 @@ class CodeNarcVerifyMojoTest {
     @Test
     void execute_shouldRelyOnPreExistingAnalysis_whenIgnoreExistingReportIsFalse() throws IOException, URISyntaxException {
         //given
-        File xmlOutput = new File(resource("sample/codenarc.xml").toURI());
+        File xmlOutput = new File(resource("sample/CodeNarc.xml").toURI());
         Results results = resultsWithViolationCounts(3, 0, 0);
         doReturn(results).when(codeNarcXmlParser).reconstruct(xmlOutput);
         mojo.setIgnoreExistingReport(false);
@@ -85,7 +85,7 @@ class CodeNarcVerifyMojoTest {
     void execute_shouldPerformAnalysis_whenIgnoreExistingReportIsTrue() throws URISyntaxException, MojoFailureException, MojoExecutionException {
         //given
         mockViolations(3, 0, 0);
-        File xmlOutput = new File(resource("sample/codenarc.xml").toURI());
+        File xmlOutput = new File(resource("sample/CodeNarc.xml").toURI());
         mojo.setXmlOutputDirectory(xmlOutput.getParentFile());
         mojo.setIgnoreExistingReport(true);
 
@@ -189,7 +189,7 @@ class CodeNarcVerifyMojoTest {
         mojo.execute();
 
         //then
-        assertEquals(config.getValue().getOutputFile(), new File("output/codenarc.xml"));
+        assertEquals(config.getValue().getOutputFile(), new File("output/CodeNarc.xml"));
     }
 
     @ParameterizedTest
