@@ -7,6 +7,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.List;
 
+/**
+ * Configures a {@link org.codenarc.CodeNarcRunner} used for running the {@code verify} goal
+ */
 @Named
 @Singleton
 public class CodeNarcRunnerFactory {

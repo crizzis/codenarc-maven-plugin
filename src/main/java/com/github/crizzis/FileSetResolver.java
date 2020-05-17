@@ -17,6 +17,9 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 
+/**
+ * Resolves file sets used for CodeNarc analysis based on the plugin's configuration
+ */
 @RequiredArgsConstructor
 @Builder
 class FileSetResolver {

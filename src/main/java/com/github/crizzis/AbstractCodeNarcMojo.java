@@ -10,6 +10,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Base class for the Mojos of this plugin. Common configuration properties are declared here
+ */
 @Getter
 @Setter
 public class AbstractCodeNarcMojo extends FailableMavenReport {

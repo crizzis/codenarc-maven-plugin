@@ -14,7 +14,7 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.SITE;
  * Create a CodeNarc report (implies the execution of the {@code verify} goal)
  */
 @Mojo(name = "codenarc", defaultPhase = SITE)
-@Execute(goal = "verify")
+@Execute(goal = "spotbugs:verify")
 public class CodeNarcReportMojo extends AbstractCodeNarcMojo {
 
     /**
@@ -33,8 +33,9 @@ public class CodeNarcReportMojo extends AbstractCodeNarcMojo {
         return true;
     }
 
-    protected void executeReport(Locale locale) throws MavenReportException {
-
+    @Override
+    protected void doExecuteReport(Locale locale) throws MavenReportException {
+        throw new MavenReportException("Report generation is not supported");
     }
 
 }

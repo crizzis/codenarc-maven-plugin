@@ -26,6 +26,10 @@ import java.util.function.Consumer;
 import static java.util.Map.entry;
 import static javax.xml.stream.XMLStreamConstants.*;
 
+/**
+ *  CodeNarc XML report parser. This class converts XML CodeNarc output files into
+ *  instances of {@link org.codenarc.results.Results}
+ */
 @Named
 @Singleton
 public class CodeNarcXmlParser {
