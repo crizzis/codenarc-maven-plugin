@@ -59,7 +59,7 @@ class VerifyGoalIntegrationIT {
     }
 
     @MavenProjectTest("/projects/verify-custom-config")
-    void verifyCustomConfig_shouldRespectCustomSer(Verifier verifier, @ProjectRoot File projectRoot)
+    void verifyCustomConfig_shouldRespectCustomSettings(Verifier verifier, @ProjectRoot File projectRoot)
             throws Exception {
         //when
         verifier.executeGoal("codenarc:verify");
@@ -76,6 +76,24 @@ class VerifyGoalIntegrationIT {
         assertThat(codeNarcReport, includesSourceDirectory(3, "src/test/groovy"));
         assertThat(codeNarcReport, includesFile("TestClassIncluded.groovy"));
         assertThat(codeNarcReport, not(includesFile("TestClassWithSomeMoreViolationsExcluded.groovy")));
+    }
+
+    @MavenProjectTest("/projects/verify-preexisting-report")
+    void verifyPreexistingReport_shouldConsumePreexistingReportCorrectly(Verifier verifier, @ProjectRoot File projectRoot)
+            throws Exception {
+        //when
+        verifier.executeGoal("codenarc:verify@generate-report");
+
+        //then
+        verifier.verifyTextInLog("CodeNarc completed: (p1=0; p2=5; p3=0)");
+        verifier.assertFilePresent("target/CodeNarc.xml");
+
+        //when, then
+        verifier.resetStreams();
+        verifier.setAutoclean(false);
+        assertThrows(VerificationException.class, () -> verifier.executeGoal("codenarc:verify@consume-report"));
+        verifier.verifyTextInLog("Parsing completed: (p1=0; p2=5; p3=0)");
+        verifier.verifyTextInLog("totalPriority2Violations exceeded threshold of 3 errors with 5");
     }
 
     private Matcher<Node> includesSourceDirectory(int index, String sourceDirectory) {
