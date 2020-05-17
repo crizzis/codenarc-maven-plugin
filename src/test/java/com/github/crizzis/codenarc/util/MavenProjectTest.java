@@ -1,4 +1,4 @@
-package com.github.crizzis.util;
+package com.github.crizzis.codenarc.util;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,8 +1,7 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.codenarc.results.Results;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -36,13 +35,13 @@ public class CodeNarcXmlParser {
 
     private static final XMLInputFactory FACTORY = XMLInputFactory.newInstance();
 
-    public Results parse(File xmlReport) throws XmlParserException {
+    public CodeNarcAnalysis parse(File xmlReport) throws XmlParserException {
         try (InputStream xmlInput = new FileInputStream(xmlReport)) {
             XMLEventReader xmlEventReader = FACTORY.createFilteredReader(FACTORY.createXMLEventReader(xmlInput),
                     NodesAttributesAndCharactersOnly.filter());
             CodeNarcXmlEventProcessor processor = new CodeNarcXmlEventProcessor(xmlEventReader);
             processor.process();
-            return processor.getResults();
+            return processor.getAnalysis();
         } catch (IOException | XMLStreamException | ClassCastException
                 | IllegalArgumentException | IllegalStateException | NoSuchElementException e) {
             throw new XmlParserException(e);
@@ -58,8 +57,10 @@ public class CodeNarcXmlParser {
         private final CodeNarcXmlEventConsumer consumer = new CodeNarcXmlEventConsumer();
 
         private final Map<String, Consumer<EndElement>> END_ELEMENT_CONSUMER_METHODS = Map.ofEntries(
+                entry("CodeNarc", consumer::consumeEndCodeNarc),
                 entry("Report", consumer::consumeEndReport),
                 entry("Project", consumer::consumeEndProject),
+                entry("SourceDirectory", consumer::consumeEndSourceDirectory),
                 entry("PackageSummary", consumer::consumeEndPackageSummary),
                 entry("Package", consumer::consumeEndPackage),
                 entry("File", consumer::consumeEndFile),
@@ -69,8 +70,10 @@ public class CodeNarcXmlParser {
         );
 
         private final Map<String, Consumer<StartElement>> START_ELEMENT_CONSUMER_METHODS = Map.ofEntries(
+                entry("CodeNarc", consumer::consumeStartCodeNarc),
                 entry("Report", consumer::consumeStartReport),
                 entry("Project", consumer::consumeStartProject),
+                entry("SourceDirectory", consumer::consumeStartSourceDirectory),
                 entry("PackageSummary", consumer::consumeStartPackageSummary),
                 entry("Package", consumer::consumeStartPackage),
                 entry("File", consumer::consumeStartFile),
@@ -122,8 +125,8 @@ public class CodeNarcXmlParser {
             }
         }
 
-        Results getResults() {
-            return consumer.getResults();
+        public CodeNarcAnalysis getAnalysis() {
+            return consumer.getAnalysis();
         }
     }
 

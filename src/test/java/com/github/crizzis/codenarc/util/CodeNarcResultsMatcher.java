@@ -1,4 +1,4 @@
-package com.github.crizzis.util;
+package com.github.crizzis.codenarc.util;
 
 import lombok.RequiredArgsConstructor;
 import org.codenarc.results.Results;
@@ -23,7 +23,7 @@ public class CodeNarcResultsMatcher extends BaseMatcher<Results> {
     private Results deepMismatchExpected;
     private Results deepMismatchActual;
 
-    public static CodeNarcResultsMatcher equalTo(Results expected) {
+    public static CodeNarcResultsMatcher equalToResults(Results expected) {
         return new CodeNarcResultsMatcher(expected);
     }
 

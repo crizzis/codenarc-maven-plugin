@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <CodeNarc url='http://www.codenarc.org' version='0.27.0'>
-    <Report timestamp='2020-01-03, 10:28:35'/>
+    <Report timestamp='Jan 03, 2020, 10:28:35 AM'/>
     <Project title='sample-mail-receiver'>
         <SourceDirectory>src/main/groovy</SourceDirectory>
         <SourceDirectory>src/test/groovy</SourceDirectory>

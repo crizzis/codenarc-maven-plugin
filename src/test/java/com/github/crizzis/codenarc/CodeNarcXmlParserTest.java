@@ -1,28 +1,38 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
-import com.github.crizzis.util.Phrasify;
+import com.github.crizzis.codenarc.util.CodeNarcResultsMatcher;
+import com.github.crizzis.codenarc.util.Phrasify;
 import org.codenarc.results.DirectoryResults;
 import org.codenarc.results.FileResults;
 import org.codenarc.results.Results;
 import org.codenarc.rule.Rule;
 import org.codenarc.rule.StubRule;
 import org.codenarc.rule.Violation;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junitpioneer.jupiter.DefaultLocale;
 
 import java.io.File;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.github.crizzis.util.CodeNarcResultsMatcher.equalTo;
+import static java.time.Month.JANUARY;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+@DefaultLocale("en-US")
 @DisplayNameGeneration(Phrasify.class)
 class CodeNarcXmlParserTest {
 
@@ -32,10 +42,10 @@ class CodeNarcXmlParserTest {
     @MethodSource
     void shouldBuildCorrectResults_whenValidXmlInput(String fileName, Results expected) throws Exception {
         //when
-        Results results = parser.parse(new File(resource(fileName).toURI()));
+        Results results = parser.parse(new File(resource(fileName).toURI())).getResults();
 
         //then
-        assertThat(results, equalTo(expected));
+        MatcherAssert.assertThat(results, CodeNarcResultsMatcher.equalToResults(expected));
     }
 
     static Stream<Arguments> shouldBuildCorrectResults_whenValidXmlInput() {
@@ -47,6 +57,18 @@ class CodeNarcXmlParserTest {
                 arguments("sample/codenarc-multiple-packages.xml", multiplePackagesResults()),
                 arguments("sample/codenarc-multiple-sources.xml", multipleSourcesResults())
         );
+    }
+
+    @Test
+    void shouldReadCorrectTimestampSourcesProjectTitleAndCodeNarcVersion_whenValidXmlInput() throws Exception {
+        //when
+        CodeNarcAnalysis analysis = parser.parse(new File(resource("sample/codenarc-multiple-sources.xml").toURI()));
+
+        //then
+        assertThat(analysis.getReportTimestamp(), equalTo(LocalDateTime.of(LocalDate.of(2020, JANUARY, 3), LocalTime.of(10, 28, 35))));
+        assertThat(analysis.getCodeNarcVersion(), equalTo("0.27.0"));
+        assertThat(analysis.getProjectTitle(), equalTo("sample-mail-receiver"));
+        assertThat(analysis.getSourceDirectories(), contains("src/main/groovy", "src/test/groovy"));
     }
 
     private static Results emptyResults() {

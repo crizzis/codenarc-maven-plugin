@@ -1,4 +1,4 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
 import org.apache.maven.model.FileSet;
 

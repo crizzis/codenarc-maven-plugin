@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <CodeNarc url='http://www.codenarc.org' version='0.27.0'>
-    <Report timestamp='2020-01-03, 10:28:35'/>
+    <Report timestamp='Jan 03, 2020, 10:28:35 AM'/>
     <Project title='sample-project' />
     <PackageSummary totalFiles='1' filesWithViolations='2' priority1='0' priority2='1' priority3='6'/>
     <Package path='' totalFiles='2' filesWithViolations='2' priority1='0' priority2='1' priority3='6'>

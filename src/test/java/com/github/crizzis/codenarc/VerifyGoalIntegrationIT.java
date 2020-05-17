@@ -1,8 +1,8 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
-import com.github.crizzis.util.MavenProjectTest;
-import com.github.crizzis.util.Phrasify;
-import com.github.crizzis.util.ProjectRoot;
+import com.github.crizzis.codenarc.util.MavenProjectTest;
+import com.github.crizzis.codenarc.util.Phrasify;
+import com.github.crizzis.codenarc.util.ProjectRoot;
 import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.hamcrest.Matcher;

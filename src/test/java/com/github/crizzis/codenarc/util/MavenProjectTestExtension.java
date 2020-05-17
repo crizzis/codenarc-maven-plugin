@@ -1,4 +1,4 @@
-package com.github.crizzis.util;
+package com.github.crizzis.codenarc.util;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.it.VerificationException;

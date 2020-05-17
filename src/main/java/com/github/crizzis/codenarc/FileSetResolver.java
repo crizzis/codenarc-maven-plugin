@@ -1,4 +1,4 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
 import com.google.inject.internal.util.Iterables;
 import com.google.inject.internal.util.Lists;

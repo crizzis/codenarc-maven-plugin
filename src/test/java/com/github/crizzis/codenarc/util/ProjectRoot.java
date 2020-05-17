@@ -1,4 +1,4 @@
-package com.github.crizzis.util;
+package com.github.crizzis.codenarc.util;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

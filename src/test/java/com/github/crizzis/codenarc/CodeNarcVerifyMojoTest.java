@@ -1,6 +1,6 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
-import com.github.crizzis.util.Phrasify;
+import com.github.crizzis.codenarc.util.Phrasify;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -209,7 +209,7 @@ public class CodeNarcVerifyMojo extends AbstractMojo implements AnalysisScopeCon
         File outputFile = getXmlOutputFile();
         try {
             getLog().info("Existing CodeNarc report XML found, parsing");
-            Results results = codeNarcXmlParser.parse(outputFile);
+            Results results = codeNarcXmlParser.parse(outputFile).getResults();
             getLog().info(String.format("Parsing completed: (p1=%d; p2=%d; p3=%d)",
                     results.getNumberOfViolationsWithPriority(PRIORITY_ONE, true),
                     results.getNumberOfViolationsWithPriority(PRIORITY_TWO, true),

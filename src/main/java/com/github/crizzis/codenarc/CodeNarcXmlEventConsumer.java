@@ -1,4 +1,4 @@
-package com.github.crizzis;
+package com.github.crizzis.codenarc;
 
 import com.google.inject.internal.util.Iterables;
 import lombok.AllArgsConstructor;
@@ -15,30 +15,47 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static java.time.format.FormatStyle.MEDIUM;
 
 @SuppressWarnings("unchecked")
 class CodeNarcXmlEventConsumer {
 
     public static final String PATH_SEPARATOR = "/";
     private Deque<Object> currentContext = new ArrayDeque<>();
-    private DirectoryResults lastDirectory;
 
     Set<String> getIgnoredTags() {
-        return Set.of("CodeNarc", "Report", "Rules", "SourceDirectory", "Rule", "Description");
+        return Set.of("Rules", "Rule", "Description");
     }
 
     Set<String> getSkippedTags() {
-        return Set.of("Report", "Rules", "Project");
+        return Set.of("Rules");
     }
 
     void consumeCharacters(Characters characters) {
         peekAs(TextHolder.class).setValue(characters.getData());
     }
 
-    void consumeStartReport(StartElement startElement) {}
+    void consumeStartCodeNarc(StartElement codeNarc) {
+        CodeNarcAnalysis analysis = new CodeNarcAnalysis();
+        analysis.setCodeNarcVersion(getVersion(codeNarc));
+        currentContext.push(analysis);
+    }
 
-    void consumeStartProject(StartElement startElement) {}
+    void consumeStartReport(StartElement startElement) {
+        peekAs(CodeNarcAnalysis.class).setReportTimestamp(getTimestamp(startElement));
+    }
+
+    void consumeStartProject(StartElement startElement) {
+        peekAs(CodeNarcAnalysis.class).setProjectTitle(getTitle(startElement));
+    }
+
+    void consumeStartSourceDirectory(StartElement startElement) {
+        currentContext.push(new SourceDirectoryHolder());
+    }
 
     void consumeStartPackageSummary(StartElement packageSummary) {
         currentContext.push(new DirectoryResults(null, getTotalFiles(packageSummary)));
@@ -69,9 +86,19 @@ class CodeNarcXmlEventConsumer {
         currentContext.push(new MessageHolder());
     }
 
+    void consumeEndCodeNarc(EndElement endElement) {
+        Results packageSummary = popAs(Results.class);
+        peekAs(CodeNarcAnalysis.class).setResults(packageSummary);
+    }
+
     void consumeEndReport(EndElement endElement) {}
 
     void consumeEndProject(EndElement endElement) {}
+
+    void consumeEndSourceDirectory(EndElement endElement) {
+        SourceDirectoryHolder sourceDirectory = popAs(SourceDirectoryHolder.class);
+        peekAs(CodeNarcAnalysis.class).addSourceDirectory(sourceDirectory.getValue());
+    }
 
     void consumeEndPackageSummary(EndElement endElement) {}
 
@@ -131,28 +158,45 @@ class CodeNarcXmlEventConsumer {
         peekAs(Violation.class).setMessage(child.getValue());
     }
 
+    private String getVersion(StartElement startElement) {
+        return getAttributeValue(startElement, "version");
+    }
+
+    private LocalDateTime getTimestamp(StartElement startElement) {
+        return LocalDateTime.parse(getAttributeValue(startElement, "timestamp"),
+                DateTimeFormatter.ofLocalizedDateTime(MEDIUM));
+    }
+
+    private String getTitle(StartElement startElement) {
+        return getAttributeValue(startElement, "title");
+    }
+
     private Integer getTotalFiles(StartElement startElement) {
-        return Integer.valueOf(startElement.getAttributeByName(new QName("totalFiles")).getValue());
+        return Integer.valueOf(getAttributeValue(startElement, "totalFiles"));
     }
 
     private String getPath(StartElement startElement) {
-        return startElement.getAttributeByName(new QName("path")).getValue();
+        return getAttributeValue(startElement, "path");
     }
 
     private String getName(StartElement startElement) {
-        return startElement.getAttributeByName(new QName("name")).getValue();
+        return getAttributeValue(startElement, "name");
     }
 
     private String getRuleName(StartElement startElement) {
-        return startElement.getAttributeByName(new QName("ruleName")).getValue();
+        return getAttributeValue(startElement, "ruleName");
     }
 
     private Integer getPriority(StartElement startElement) {
-        return Integer.valueOf(startElement.getAttributeByName(new QName("priority")).getValue());
+        return Integer.valueOf(getAttributeValue(startElement, "priority"));
     }
 
     private Integer getLineNumber(StartElement startElement) {
-        return Integer.valueOf(startElement.getAttributeByName(new QName("lineNumber")).getValue());
+        return Integer.valueOf(getAttributeValue(startElement, "lineNumber"));
+    }
+
+    private String getAttributeValue(StartElement startElement, String name) {
+        return startElement.getAttributeByName(new QName(name)).getValue();
     }
 
     private <T> T popAs(Class<T> expectedClass) {
@@ -163,15 +207,22 @@ class CodeNarcXmlEventConsumer {
         return (T) currentContext.peek();
     }
 
-    Results getResults() {
+    public CodeNarcAnalysis getAnalysis() {
         if (currentContext.size() > 1) {
             throw new IllegalStateException("Malformed XML report input, " + currentContext + " left to parse");
         }
-        return (Results) Iterables.getOnlyElement(currentContext);
+        return (CodeNarcAnalysis) Iterables.getOnlyElement(currentContext);
     }
 
     private interface TextHolder {
         void setValue(String value);
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    private static class SourceDirectoryHolder implements TextHolder {
+        private String value;
     }
 
     @Getter
