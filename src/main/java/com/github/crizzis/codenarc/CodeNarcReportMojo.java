@@ -8,6 +8,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -23,6 +24,15 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.SITE;
 @Execute(goal = "spotbugs:verify")
 public class CodeNarcReportMojo extends AbstractMavenReport {
 
+    private final CodeNarcXmlParser xmlParser;
+    private final CodeNarcReportGenerator reportGenerator;
+
+    @Inject
+    public CodeNarcReportMojo(CodeNarcXmlParser xmlParser, CodeNarcReportGenerator reportGenerator) {
+        this.xmlParser = xmlParser;
+        this.reportGenerator = reportGenerator;
+    }
+
     /**
      * Location where the generated XML report will be created
      */
@@ -30,7 +40,7 @@ public class CodeNarcReportMojo extends AbstractMavenReport {
     private File xmlOutputDirectory;
 
     /**
-     * Set this to "true" to bypass CodeNarc verification entirely
+     * Set this to "true" to bypass CodeNarc report generation entirely
      */
     @Parameter(property="codenarc.skip", defaultValue = "false")
     private boolean skip;
@@ -38,6 +48,10 @@ public class CodeNarcReportMojo extends AbstractMavenReport {
     @Override
     public boolean canGenerateReport() {
         File xmlOutputFile = getXmlOutputFile();
+        if (isSkip()) {
+            getLog().info("Plugin execution skipped");
+            return false;
+        }
         if (!xmlOutputFile.exists() || !xmlOutputFile.canRead()) {
             getLog().info(String.format("CodeNarc report %s not found - skipping HTML report generation", xmlOutputFile.getPath()));
             return false;
@@ -47,7 +61,8 @@ public class CodeNarcReportMojo extends AbstractMavenReport {
 
     @Override
     protected void executeReport(Locale locale) throws MavenReportException {
-        throw new MavenReportException("Report generation is not supported");
+        CodeNarcAnalysis analysis = parseAnalysis();
+        reportGenerator.generate(analysis, getSink(), locale);
     }
 
     @Override
@@ -57,12 +72,28 @@ public class CodeNarcReportMojo extends AbstractMavenReport {
 
     @Override
     public String getName(Locale locale) {
-        return ResourceBundle.getBundle("codenarc", locale).getString("report.codenarc.name");
+        return getCodeNarcMessages(locale).getString("report.codenarc.name");
     }
 
     @Override
     public String getDescription(Locale locale) {
-        return ResourceBundle.getBundle("codenarc", locale).getString("report.codenarc.description");
+        return getCodeNarcMessages(locale).getString("report.codenarc.description");
+    }
+
+    private ResourceBundle getCodeNarcMessages(Locale locale) {
+        return ResourceBundle.getBundle("codenarc-messages", locale);
+    }
+
+    private CodeNarcAnalysis parseAnalysis() throws MavenReportException {
+        File outputFile = getXmlOutputFile();
+        try {
+            getLog().info("CodeNarc report XML found, parsing");
+            CodeNarcAnalysis analysis = xmlParser.parse(outputFile);
+            getLog().info("Parsing completed");
+            return analysis;
+        } catch (CodeNarcXmlParser.XmlParserException e) {
+            throw new MavenReportException(String.format("Could not parse: %s", outputFile.getAbsolutePath()), e);
+        }
     }
 
     private File getXmlOutputFile() {

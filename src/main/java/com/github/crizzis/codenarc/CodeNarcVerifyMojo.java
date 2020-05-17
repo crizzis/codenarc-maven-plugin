@@ -57,7 +57,7 @@ public class CodeNarcVerifyMojo extends AbstractMojo implements AnalysisScopeCon
 
     private final CodeNarcRunnerFactory codeNarcRunnerFactory;
     private final CodeNarcXmlParser codeNarcXmlParser;
-    private Collection<GroovyCompilerPluginIntegration> compilerIntegrations;
+    private final Collection<GroovyCompilerPluginIntegration> compilerIntegrations;
 
     @Inject
     public CodeNarcVerifyMojo(
