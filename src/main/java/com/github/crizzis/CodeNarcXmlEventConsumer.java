@@ -20,10 +20,16 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 class CodeNarcXmlEventConsumer {
 
+    public static final String PATH_SEPARATOR = "/";
     private Deque<Object> currentContext = new ArrayDeque<>();
+    private DirectoryResults lastDirectory;
 
     Set<String> getIgnoredTags() {
-        return Set.of("CodeNarc", "Report", "Rules");
+        return Set.of("CodeNarc", "Report", "Rules", "SourceDirectory", "Rule", "Description");
+    }
+
+    Set<String> getSkippedTags() {
+        return Set.of("Report", "Rules", "Project");
     }
 
     void consumeCharacters(Characters characters) {
@@ -71,7 +77,38 @@ class CodeNarcXmlEventConsumer {
 
     void consumeEndPackage(EndElement endElement) {
         DirectoryResults child = popAs(DirectoryResults.class);
-        peekAs(DirectoryResults.class).addChild(child);
+        DirectoryResults parent = peekAs(DirectoryResults.class);
+        embedChildInParent(child, parent);
+    }
+
+    private void embedChildInParent(DirectoryResults child, DirectoryResults parent) {
+        if (child.getPath().isEmpty()) {
+            parent.addChild(child);
+            return;
+        }
+        DirectoryResults previous = null;
+        while (parent != null) {
+            previous = parent;
+            parent = findAntecedentForPath(parent, child.getPath());
+        }
+        if (previous != null) {
+            previous.addChild(child);
+        }
+    }
+
+    private DirectoryResults findAntecedentForPath(DirectoryResults parent, String path) {
+        ListIterator<Results> childIterator = parent.getChildren().listIterator(parent.getChildren().size());
+        while (childIterator.hasPrevious()) {
+            Results previous = childIterator.previous();
+            if (!previous.isFile() && isAntecedentForPath(previous, path)) {
+                return (DirectoryResults) previous;
+            }
+        }
+        return null;
+    }
+
+    private boolean isAntecedentForPath(Results directory, String path) {
+        return directory.getPath().isEmpty() || path.startsWith(directory.getPath() + PATH_SEPARATOR);
     }
 
     void consumeEndFile(EndElement endElement) {

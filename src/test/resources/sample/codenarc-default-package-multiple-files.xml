@@ -1,0 +1,75 @@
+<?xml version='1.0'?>
+<CodeNarc url='http://www.codenarc.org' version='0.27.0'>
+    <Report timestamp='2020-01-03, 10:28:35'/>
+    <Project title='sample-project' />
+    <PackageSummary totalFiles='1' filesWithViolations='2' priority1='0' priority2='1' priority3='6'/>
+    <Package path='' totalFiles='2' filesWithViolations='2' priority1='0' priority2='1' priority3='6'>
+        <File name='SampleMessageIT.groovy'>
+            <Violation ruleName='MisorderedStaticImports' priority='3' lineNumber='15'>
+                <SourceLine>
+                    <![CDATA[import static javax.mail.Flags.Flag.SEEN]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[Static imports should appear before normal imports]]>
+                </Message>
+            </Violation>
+            <Violation ruleName='MisorderedStaticImports' priority='3' lineNumber='16'>
+                <SourceLine>
+                    <![CDATA[import static javax.mail.Message.RecipientType.TO]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[Static imports should appear before normal imports]]>
+                </Message>
+            </Violation>
+            <Violation ruleName='MisorderedStaticImports' priority='3' lineNumber='17'>
+                <SourceLine>
+                    <![CDATA[import static com.example.Definition.SAMPLE_DEFINITION]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[Static imports should appear before normal imports]]>
+                </Message>
+            </Violation>
+            <Violation ruleName='UnusedPrivateField' priority='2' lineNumber='22'>
+                <SourceLine>
+                    <![CDATA[private TestProcessor processor]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[The field processor is not used within the class SampleMessageIT]]>
+                </Message>
+            </Violation>
+        </File>
+        <File name='OutgoingMessageIT.groovy'>
+            <Violation ruleName='MisorderedStaticImports' priority='3' lineNumber='6'>
+                <SourceLine>
+                    <![CDATA[import static com.example.Samples.SAMPLE_CODE]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[Static imports should appear before normal imports]]>
+                </Message>
+            </Violation>
+            <Violation ruleName='UnusedImport' priority='3' lineNumber='13'>
+                <SourceLine>
+                    <![CDATA[import com.example.MessageStatus]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[The [com.example.MessageStatus] import is never referenced]]>
+                </Message>
+            </Violation>
+            <Violation ruleName='MisorderedStaticImports' priority='3' lineNumber='16'>
+                <SourceLine>
+                    <![CDATA[import static com.example.MessageStatus.SENT]]>
+                </SourceLine>
+                <Message>
+                    <![CDATA[Static imports should appear before normal imports]]>
+                </Message>
+            </Violation>
+        </File>
+    </Package>
+    <Rules>
+        <Rule name='AbstractClassName'>
+            <Description>
+                <![CDATA[Verifies that the name of an abstract class matches a regular expression specified in the regex property. If that property is null or empty, then this rule is not applied (i.e., it does nothing). It defaults to null, so this rule must be explicitly configured to be active. This rule ignores interfaces.]]>
+            </Description>
+        </Rule>
+    </Rules>
+</CodeNarc>

@@ -79,7 +79,7 @@ public class CodeNarcXmlParser {
             while (eventReader.hasNext()) {
                 XMLEvent xmlEvent = eventReader.nextEvent();
                 if (xmlEvent.isStartElement()) {
-                    handleStartElement(xmlEvent.asStartElement());
+                    handleStartElement(eventReader, xmlEvent.asStartElement());
                 } else if (xmlEvent.isEndElement()) {
                     handleEndElement(xmlEvent.asEndElement());
                 } else if (xmlEvent.isCharacters()) {
@@ -97,9 +97,19 @@ public class CodeNarcXmlParser {
             END_ELEMENT_CONSUMER_METHODS.getOrDefault(name, element -> verifyIgnoredTag(name)).accept(endElement);
         }
 
-        private void handleStartElement(StartElement startElement) {
+        private void handleStartElement(XMLEventReader eventReader, StartElement startElement) throws XMLStreamException {
             String name = startElement.getName().getLocalPart();
+            if (consumer.getSkippedTags().contains(name)) {
+                skipUntilEnd(eventReader, name);
+            }
             START_ELEMENT_CONSUMER_METHODS.getOrDefault(name, element -> verifyIgnoredTag(name)).accept(startElement);
+        }
+
+        private void skipUntilEnd(XMLEventReader eventReader, String name) throws XMLStreamException {
+            XMLEvent xmlEvent;
+            do {
+                xmlEvent = eventReader.nextEvent();
+            } while (!xmlEvent.isEndElement() || !xmlEvent.asEndElement().getName().getLocalPart().equals(name));
         }
 
         private void verifyIgnoredTag(String name) {
