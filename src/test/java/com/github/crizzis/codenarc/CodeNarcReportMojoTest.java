@@ -1,5 +1,8 @@
 package com.github.crizzis.codenarc;
 
+import com.github.crizzis.codenarc.parser.CodeNarcAnalysis;
+import com.github.crizzis.codenarc.parser.CodeNarcXmlParser;
+import com.github.crizzis.codenarc.report.CodeNarcReportGenerator;
 import com.github.crizzis.codenarc.util.Phrasify;
 import org.apache.maven.reporting.MavenReportException;
 import org.junit.jupiter.api.DisplayNameGeneration;

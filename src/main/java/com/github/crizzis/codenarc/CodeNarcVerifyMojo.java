@@ -15,6 +15,10 @@
  */
 package com.github.crizzis.codenarc;
 
+import com.github.crizzis.codenarc.integration.GroovyCompilerPluginIntegration;
+import com.github.crizzis.codenarc.parser.CodeNarcXmlParser;
+import com.github.crizzis.codenarc.runner.CodeNarcConfig;
+import com.github.crizzis.codenarc.runner.CodeNarcRunnerFactory;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.maven.execution.MavenSession;
@@ -119,8 +123,7 @@ public class CodeNarcVerifyMojo extends AbstractMojo implements AnalysisScopeCon
     /**
      * The filesets containing source files to be analyzed.
      *
-     * Defaults to the source configuration of <a href="https://groovy.github.io/GMavenPlus/">gmavenplus-plugin</a> if configured as part of the build;
-     * otherwise, uses {@code ${project.basedir}/src/main/groovy/**&#47;*.groovy} as the default.
+     * Defaults to {@code ${project.basedir}/src/main/groovy/**&#47;*.groovy}
      */
     @Parameter(property = "codenarc.sources")
     private FileSet[] sources;
@@ -128,8 +131,7 @@ public class CodeNarcVerifyMojo extends AbstractMojo implements AnalysisScopeCon
     /**
      * The filesets containing source files to be analyzed.
      *
-     * Defaults to the test source configuration of <a href="https://groovy.github.io/GMavenPlus/">gmavenplus-plugin</a> if configured as part of the build;
-     * otherwise, uses {@code ${project.basedir}/src/test/groovy/**&#47;*.groovy} as the default
+     * Defaults to {@code ${project.basedir}/src/test/groovy/**&#47;*.groovy}
      */
     @Parameter(property = "codenarc.testSources")
     private FileSet[] testSources;

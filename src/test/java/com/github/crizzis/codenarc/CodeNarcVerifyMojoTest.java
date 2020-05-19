@@ -1,5 +1,10 @@
 package com.github.crizzis.codenarc;
 
+import com.github.crizzis.codenarc.integration.GroovyCompilerPluginIntegration;
+import com.github.crizzis.codenarc.parser.CodeNarcAnalysis;
+import com.github.crizzis.codenarc.parser.CodeNarcXmlParser;
+import com.github.crizzis.codenarc.runner.CodeNarcConfig;
+import com.github.crizzis.codenarc.runner.CodeNarcRunnerFactory;
 import com.github.crizzis.codenarc.util.Phrasify;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -38,7 +43,8 @@ import static org.mockito.Mockito.*;
 @DisplayNameGeneration(Phrasify.class)
 class CodeNarcVerifyMojoTest {
 
-    public static final String PROJECT_NAME = "example_project";
+    private static final String PROJECT_NAME = "example_project";
+
     private CodeNarcRunnerFactory codeNarcRunnerFactory = mock(CodeNarcRunnerFactory.class);
     private CodeNarcRunner codeNarcRunner = mock(CodeNarcRunner.class);
     private CodeNarcXmlParser codeNarcXmlParser = mock(CodeNarcXmlParser.class);
@@ -71,8 +77,8 @@ class CodeNarcVerifyMojoTest {
     void execute_shouldRelyOnPreExistingAnalysis_whenIgnoreExistingReportIsFalse() throws Exception {
         //given
         File xmlOutput = new File(resource("sample/CodeNarc.xml").toURI());
-        Results results = resultsWithViolationCounts(3, 0, 0);
-        doReturn(results).when(codeNarcXmlParser).parse(xmlOutput);
+        CodeNarcAnalysis analysis = analysisWithViolationCounts(3, 0, 0);
+        doReturn(analysis).when(codeNarcXmlParser).parse(xmlOutput);
         mojo.setIgnoreExistingReport(false);
         mojo.setXmlOutputDirectory(xmlOutput.getParentFile());
         mojo.setMaxPriority1Violations(2);
@@ -408,5 +414,11 @@ class CodeNarcVerifyMojoTest {
                 hasProperty("includes", equalTo(expected.getIncludes())),
                 hasProperty("excludes", equalTo(expected.getExcludes()))
         );
+    }
+
+    private CodeNarcAnalysis analysisWithViolationCounts(int priorityOne, int priorityTwo, int priorityThree) {
+        CodeNarcAnalysis analysis = new CodeNarcAnalysis();
+        analysis.setResults(resultsWithViolationCounts(priorityOne, priorityTwo, priorityThree));
+        return analysis;
     }
 }

@@ -1,4 +1,4 @@
-package com.github.crizzis.codenarc;
+package com.github.crizzis.codenarc.runner;
 
 import org.codenarc.CodeNarcRunner;
 import org.codenarc.report.XmlReportWriter;

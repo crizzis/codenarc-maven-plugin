@@ -1,0 +1,76 @@
+<report>
+    <head>
+        <title>
+            CodeNarc Report
+        </title>
+    </head>
+    <body>
+        <section1>
+            <sectionTitle1>
+                CodeNarc Report
+            </sectionTitle1>
+            <paragraph>
+                The following document contains the results of CodeNarc analysis
+            </paragraph>
+            <paragraph>
+                CodeNarc Version:
+                <italic>
+                    0.27.0
+                </italic>
+            </paragraph>
+            <paragraph>
+                Report time:
+                <italic>
+                    Jan 3, 2020, 10:28:35 AM
+                </italic>
+            </paragraph>
+        </section1>
+        <section1>
+            <sectionTitle1>
+                Summary
+            </sectionTitle1>
+            <table>
+                <tableRow>
+                    <tableHeaderCell>
+                        Total Files
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Files with Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Total Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 1 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 2 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 3 Violations
+                    </tableHeaderCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                </tableRow>
+            </table>
+        </section1>
+    </body>
+</report>

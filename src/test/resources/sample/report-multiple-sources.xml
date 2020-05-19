@@ -1,0 +1,316 @@
+<report>
+    <head>
+        <title>
+            CodeNarc Report
+        </title>
+    </head>
+    <body>
+        <section1>
+            <sectionTitle1>
+                CodeNarc Report
+            </sectionTitle1>
+            <paragraph>
+                The following document contains the results of CodeNarc analysis
+            </paragraph>
+            <paragraph>
+                CodeNarc Version:
+                <italic>
+                    0.27.0
+                </italic>
+            </paragraph>
+            <paragraph>
+                Report time:
+                <italic>
+                    Jan 3, 2020, 10:28:35 AM
+                </italic>
+            </paragraph>
+        </section1>
+        <section1>
+            <sectionTitle1>
+                Summary
+            </sectionTitle1>
+            <table>
+                <tableRow>
+                    <tableHeaderCell>
+                        Total Files
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Files with Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Total Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 1 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 2 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 3 Violations
+                    </tableHeaderCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        2
+                    </tableCell>
+                    <tableCell>
+                        2
+                    </tableCell>
+                    <tableCell>
+                        4
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        1
+                    </tableCell>
+                    <tableCell>
+                        3
+                    </tableCell>
+                </tableRow>
+            </table>
+        </section1>
+        <section1>
+            <sectionTitle1>
+                Package Summary
+            </sectionTitle1>
+            <sectionTitle2>
+                Source Directory:
+                <italic>
+                    src/main/groovy
+                </italic>
+            </sectionTitle2>
+            <table>
+                <tableRow>
+                    <tableHeaderCell>
+                        Package
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Files with Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Total Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 1 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 2 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 3 Violations
+                    </tableHeaderCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        com.example
+                    </tableCell>
+                    <tableCell>
+                        1
+                    </tableCell>
+                    <tableCell>
+                        1
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        1
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                </tableRow>
+            </table>
+            <sectionTitle2>
+                Source Directory:
+                <italic>
+                    src/test/groovy
+                </italic>
+            </sectionTitle2>
+            <table>
+                <tableRow>
+                    <tableHeaderCell>
+                        Package
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Files with Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Total Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 1 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 2 Violations
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority 3 Violations
+                    </tableHeaderCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        com.example.packageone.packagetwo
+                    </tableCell>
+                    <tableCell>
+                        1
+                    </tableCell>
+                    <tableCell>
+                        3
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        0
+                    </tableCell>
+                    <tableCell>
+                        3
+                    </tableCell>
+                </tableRow>
+            </table>
+        </section1>
+        <section1>
+            <sectionTitle1>
+                Files
+            </sectionTitle1>
+            <sectionTitle2>
+                Source Directory:
+                <italic>
+                    src/main/groovy
+                </italic>
+            </sectionTitle2>
+            <sectionTitle3>
+                com/example/SampleApplication.groovy
+            </sectionTitle3>
+            <table>
+                <tableRow>
+                    <tableHeaderCell>
+                        Rule Name
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Line
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Source Line / Message
+                    </tableHeaderCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        UnusedPrivateField
+                    </tableCell>
+                    <tableCell>
+                        2
+                    </tableCell>
+                    <tableCell>
+                        18
+                    </tableCell>
+                    <tableCell>
+                        <paragraph>
+                            <italic>
+                                private TestConsumer testConsumer
+                            </italic>
+                        </paragraph>
+                        <paragraph>
+                            The field testConsumer is not used within the class SampleApplication
+                        </paragraph>
+                    </tableCell>
+                </tableRow>
+            </table>
+            <sectionTitle2>
+                Source Directory:
+                <italic>
+                    src/test/groovy
+                </italic>
+            </sectionTitle2>
+            <sectionTitle3>
+                com/example/packageone/packagetwo/OutgoingMessageIT.groovy
+            </sectionTitle3>
+            <table>
+                <tableRow>
+                    <tableHeaderCell>
+                        Rule Name
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Priority
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Line
+                    </tableHeaderCell>
+                    <tableHeaderCell>
+                        Source Line / Message
+                    </tableHeaderCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        MisorderedStaticImports
+                    </tableCell>
+                    <tableCell>
+                        3
+                    </tableCell>
+                    <tableCell>
+                        6
+                    </tableCell>
+                    <tableCell>
+                        <paragraph>
+                            <italic>
+                                import static com.example.Samples.SAMPLE_CODE
+                            </italic>
+                        </paragraph>
+                        <paragraph>
+                            Static imports should appear before normal imports
+                        </paragraph>
+                    </tableCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        UnusedImport
+                    </tableCell>
+                    <tableCell>
+                        3
+                    </tableCell>
+                    <tableCell>
+                        13
+                    </tableCell>
+                    <tableCell>
+                        <paragraph>
+                            <italic>
+                                import com.example.MessageStatus
+                            </italic>
+                        </paragraph>
+                        <paragraph>
+                            The [com.example.MessageStatus] import is never referenced
+                        </paragraph>
+                    </tableCell>
+                </tableRow>
+                <tableRow>
+                    <tableCell>
+                        MisorderedStaticImports
+                    </tableCell>
+                    <tableCell>
+                        3
+                    </tableCell>
+                    <tableCell>
+                        16
+                    </tableCell>
+                    <tableCell>
+                        <paragraph>
+                            <italic>
+                                import static com.example.MessageStatus.SENT
+                            </italic>
+                        </paragraph>
+                        <paragraph>
+                            Static imports should appear before normal imports
+                        </paragraph>
+                    </tableCell>
+                </tableRow>
+            </table>
+        </section1>
+    </body>
+</report>

@@ -1,4 +1,4 @@
-package com.github.crizzis.codenarc;
+package com.github.crizzis.codenarc.runner;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * by using multiple {@link FilesystemSourceAnalyzer}s
  */
 @RequiredArgsConstructor
-public class FileSetSourceAnalyzer extends AbstractSourceAnalyzer {
+class FileSetSourceAnalyzer extends AbstractSourceAnalyzer {
 
     @NonNull
     private final List<FileSet> fileSets;

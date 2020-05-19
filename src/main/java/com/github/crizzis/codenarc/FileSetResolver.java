@@ -1,5 +1,6 @@
 package com.github.crizzis.codenarc;
 
+import com.github.crizzis.codenarc.integration.GroovyCompilerPluginIntegration;
 import com.google.inject.internal.util.Iterables;
 import com.google.inject.internal.util.Lists;
 import lombok.Builder;

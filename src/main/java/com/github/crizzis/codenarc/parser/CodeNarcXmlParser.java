@@ -1,4 +1,4 @@
-package com.github.crizzis.codenarc;
+package com.github.crizzis.codenarc.parser;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

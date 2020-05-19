@@ -1,4 +1,4 @@
-package com.github.crizzis.codenarc;
+package com.github.crizzis.codenarc.parser;
 
 import com.google.inject.internal.util.Iterables;
 import lombok.AllArgsConstructor;

@@ -42,7 +42,8 @@ public class CodeNarcResultsMatcher extends BaseMatcher<Results> {
         if (actualIsFile) {
             return areFilesEqual(actual, expected);
         }
-        if (!areListsEqual(actual.getChildren(), expected.getChildren(), this::areEqual)) {
+        if (actual.getTotalNumberOfFiles(false) != expected.getTotalNumberOfFiles(false)
+                || !areListsEqual(actual.getChildren(), expected.getChildren(), this::areEqual)) {
             recordMismatch(actual, expected); //only needed when children lists differ in size
             return false;
         }

@@ -1,4 +1,4 @@
-package com.github.crizzis.codenarc;
+package com.github.crizzis.codenarc.integration;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Build;

@@ -1,5 +1,8 @@
 package com.github.crizzis.codenarc;
 
+import com.github.crizzis.codenarc.parser.CodeNarcAnalysis;
+import com.github.crizzis.codenarc.parser.CodeNarcXmlParser;
+import com.github.crizzis.codenarc.report.CodeNarcReportGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.maven.plugins.annotations.Execute;
@@ -21,7 +24,7 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.SITE;
 @Getter
 @Setter
 @Mojo(name = "codenarc", defaultPhase = SITE)
-@Execute(goal = "spotbugs:verify")
+@Execute(goal = "verify")
 public class CodeNarcReportMojo extends AbstractMavenReport {
 
     private final CodeNarcXmlParser xmlParser;
@@ -62,6 +65,11 @@ public class CodeNarcReportMojo extends AbstractMavenReport {
     @Override
     protected void executeReport(Locale locale) throws MavenReportException {
         CodeNarcAnalysis analysis = parseAnalysis();
+        generateReport(analysis, locale);
+    }
+
+    private void generateReport(CodeNarcAnalysis analysis, Locale locale) {
+        getLog().info("Report locale set to " + locale);
         reportGenerator.generate(analysis, getSink(), locale);
     }
 

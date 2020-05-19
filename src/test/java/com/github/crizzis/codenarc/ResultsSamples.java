@@ -1,97 +1,42 @@
 package com.github.crizzis.codenarc;
 
-import com.github.crizzis.codenarc.util.CodeNarcResultsMatcher;
-import com.github.crizzis.codenarc.util.Phrasify;
+import lombok.experimental.UtilityClass;
 import org.codenarc.results.DirectoryResults;
 import org.codenarc.results.FileResults;
 import org.codenarc.results.Results;
 import org.codenarc.rule.Rule;
 import org.codenarc.rule.StubRule;
 import org.codenarc.rule.Violation;
-import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junitpioneer.jupiter.DefaultLocale;
 
-import java.io.File;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
-import static java.time.Month.JANUARY;
 import static java.util.Collections.emptyList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-@DefaultLocale("en-US")
-@DisplayNameGeneration(Phrasify.class)
-class CodeNarcXmlParserTest {
+@UtilityClass
+public final class ResultsSamples {
 
-    private CodeNarcXmlParser parser = new CodeNarcXmlParser();
-
-    @ParameterizedTest(name = "should build correct results for {0}")
-    @MethodSource
-    void shouldBuildCorrectResults_whenValidXmlInput(String fileName, Results expected) throws Exception {
-        //when
-        Results results = parser.parse(new File(resource(fileName).toURI())).getResults();
-
-        //then
-        MatcherAssert.assertThat(results, CodeNarcResultsMatcher.equalToResults(expected));
+    public static Results emptyResults() {
+        return root(0, emptyList());
     }
 
-    static Stream<Arguments> shouldBuildCorrectResults_whenValidXmlInput() {
-        return Stream.of(
-                arguments("sample/codenarc-empty.xml", emptyResults()),
-                arguments("sample/codenarc-default-package-single-file.xml", defaultPackageSingleFileResults()),
-                arguments("sample/codenarc-default-package-multiple-files.xml", defaultPackageMultipleFilesResults()),
-                arguments("sample/codenarc-regular-package-multiple-files.xml", regularPackageMultipleFilesResults()),
-                arguments("sample/codenarc-multiple-packages.xml", multiplePackagesResults()),
-                arguments("sample/codenarc-multiple-sources.xml", multipleSourcesResults())
-        );
-    }
-
-    @Test
-    void shouldReadCorrectTimestampSourcesProjectTitleAndCodeNarcVersion_whenValidXmlInput() throws Exception {
-        //when
-        CodeNarcAnalysis analysis = parser.parse(new File(resource("sample/codenarc-multiple-sources.xml").toURI()));
-
-        //then
-        assertThat(analysis.getReportTimestamp(), equalTo(LocalDateTime.of(LocalDate.of(2020, JANUARY, 3), LocalTime.of(10, 28, 35))));
-        assertThat(analysis.getCodeNarcVersion(), equalTo("0.27.0"));
-        assertThat(analysis.getProjectTitle(), equalTo("sample-mail-receiver"));
-        assertThat(analysis.getSourceDirectories(), contains("src/main/groovy", "src/test/groovy"));
-    }
-
-    private static Results emptyResults() {
-        return root(emptyList());
-    }
-
-    private static Results defaultPackageSingleFileResults() {
-        return root(List.of(
+    public static Results defaultPackageSingleFileResults() {
+        return root(1, List.of(
                 directory("", 1, List.of(
                         sampleApplicationFile()
                 ))));
     }
 
-    private static Results defaultPackageMultipleFilesResults() {
-        return root(List.of(
+    public static Results defaultPackageMultipleFilesResults() {
+        return root(2, List.of(
                 directory("", 2, List.of(
                         sampleMessageITFile(),
                         outgoingMessageITFile()
                 ))));
     }
 
-    private static Results regularPackageMultipleFilesResults() {
-        return root(List.of(
+    public static Results regularPackageMultipleFilesResults() {
+        return root(2, List.of(
                 nestedDirectory(List.of("",
                         "com",
                         "com/example",
@@ -106,8 +51,8 @@ class CodeNarcXmlParserTest {
                 ))));
     }
 
-    private static Results multiplePackagesResults() {
-        return root(List.of(
+    public static Results multiplePackagesResults() {
+        return root(4, List.of(
                 nestedDirectory(List.of("", "com", "com/example"), 4, List.of(
                         sampleApplicationFile(),
                         directory("com/example/packageone", 2, List.of(
@@ -120,8 +65,8 @@ class CodeNarcXmlParserTest {
                 ))));
     }
 
-    private static Results multipleSourcesResults() {
-        return root(List.of(
+    public static Results multipleSourcesResults() {
+        return root(2, List.of(
                 nestedDirectory(List.of("",
                         "com",
                         "com/example"), 1, List.of(
@@ -192,8 +137,8 @@ class CodeNarcXmlParserTest {
         ));
     }
 
-    private static Results root(List<Results> children) {
-        return directory(null, 0, children);
+    private static Results root(int numberOfFiles, List<Results> children) {
+        return directory(null, numberOfFiles, children);
     }
 
     private static DirectoryResults directory(String path, int numberOfFiles, List<Results> children) {
@@ -233,7 +178,4 @@ class CodeNarcXmlParserTest {
         return stubRule;
     }
 
-    private static URL resource(String name) {
-        return CodeNarcXmlParserTest.class.getClassLoader().getResource(name);
-    }
 }

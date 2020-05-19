@@ -1,7 +1,8 @@
-package com.github.crizzis.codenarc;
+package com.github.crizzis.codenarc.parser;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.codenarc.results.Results;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class CodeNarcAnalysis {
 
     private String codeNarcVersion;

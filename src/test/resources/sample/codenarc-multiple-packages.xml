@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <CodeNarc url='http://www.codenarc.org' version='0.27.0'>
     <Report timestamp='Jan 03, 2020, 10:28:35 AM'/>
-    <Project title='sample-project' />
+    <Project title='sample-mail-receiver' />
     <PackageSummary totalFiles='4' filesWithViolations='2' priority1='0' priority2='2' priority3='7'/>
     <Package path='' totalFiles='4' filesWithViolations='2' priority1='0' priority2='2' priority3='6'/>
     <Package path='com' totalFiles='4' filesWithViolations='2' priority1='0' priority2='2' priority3='6'/>
