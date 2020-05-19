@@ -12,14 +12,10 @@ import org.junitpioneer.jupiter.DefaultLocale;
 
 import java.io.File;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.stream.Stream;
 
 import static com.github.crizzis.codenarc.ResultsSamples.*;
 import static com.github.crizzis.codenarc.util.CodeNarcResultsMatcher.equalToResults;
-import static java.time.Month.JANUARY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -58,7 +54,7 @@ class CodeNarcXmlParserTest {
         CodeNarcAnalysis analysis = parser.parse(new File(resource("sample/codenarc-multiple-sources.xml").toURI()));
 
         //then
-        assertThat(analysis.getReportTimestamp(), equalTo(LocalDateTime.of(LocalDate.of(2020, JANUARY, 3), LocalTime.of(10, 28, 35))));
+        assertThat(analysis.getReportTimestamp(), equalTo("Jan 03, 2020, 10:28:35 AM"));
         assertThat(analysis.getCodeNarcVersion(), equalTo("0.27.0"));
         assertThat(analysis.getProjectTitle(), equalTo("sample-mail-receiver"));
         assertThat(analysis.getSourceDirectories(), contains("src/main/groovy", "src/test/groovy"));

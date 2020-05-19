@@ -22,13 +22,13 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayNameGeneration(Phrasify.class)
-class VerifyGoalIntegrationIT {
+class VerifyGoalIT {
 
     private static final DocumentBuilderFactory XML_FACTORY = DocumentBuilderFactory.newDefaultInstance();
 
     private DocumentBuilder xmlBuilder = XML_FACTORY.newDocumentBuilder();
 
-    VerifyGoalIntegrationIT() throws ParserConfigurationException {
+    VerifyGoalIT() throws ParserConfigurationException {
     }
 
     @MavenProjectTest("/projects/verify-minimal-config-no-violations")
@@ -108,8 +108,8 @@ class VerifyGoalIntegrationIT {
         return hasXPath("/CodeNarc/Package/File[@name='" + filename + "']");
     }
 
-    private Document parseXml(@ProjectRoot File projectRoot, String path) throws SAXException, IOException {
-        return xmlBuilder.parse(new File(projectRoot, path));
+    private Document parseXml(File parent, String path) throws SAXException, IOException {
+        return xmlBuilder.parse(new File(parent, path));
     }
 
 }

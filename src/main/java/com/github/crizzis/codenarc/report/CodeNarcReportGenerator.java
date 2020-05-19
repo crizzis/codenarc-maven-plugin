@@ -10,8 +10,6 @@ import org.codenarc.results.Results;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -19,7 +17,6 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 import static com.github.crizzis.codenarc.report.ResultWalker.*;
-import static java.time.format.FormatStyle.MEDIUM;
 
 /**
  * CodeNarc report generator. Takes an instance of {@link CodeNarcAnalysis} as input
@@ -28,8 +25,7 @@ import static java.time.format.FormatStyle.MEDIUM;
 @Singleton
 public class CodeNarcReportGenerator {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(MEDIUM);
-    public static final int MAX_PRIORITY = 3;
+    private static final int MAX_PRIORITY = 3;
 
     private final ResultWalker resultWalker = new ResultWalker();
 
@@ -62,7 +58,7 @@ public class CodeNarcReportGenerator {
         printSectionTitle(sink, "CodeNarc Report");
         printParagraph(sink, "The following document contains the results of CodeNarc analysis");
         printKeyValue(sink, "CodeNarc Version", input.getCodeNarcVersion());
-        printKeyValue(sink, "Report time", formatDate(input.getReportTimestamp(), locale));
+        printKeyValue(sink, "Report time", input.getReportTimestamp());
         sink.section1_();
     }
 
@@ -147,10 +143,6 @@ public class CodeNarcReportGenerator {
 
     private void printResultTable(Sink sink, TableRenderer<Results> renderer, Results root, Predicate<Results> include) {
         renderer.renderTable(sink, renderingCallback -> resultWalker.walk(root, include, renderingCallback));
-    }
-
-    private String formatDate(LocalDateTime date, Locale locale) {
-        return DATE_TIME_FORMATTER.withLocale(locale).format(date);
     }
 
     private boolean hasViolations(CodeNarcAnalysis input) {

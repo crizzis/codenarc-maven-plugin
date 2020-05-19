@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.codenarc.results.Results;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class CodeNarcAnalysis {
 
     private String codeNarcVersion;
     private String projectTitle;
-    private LocalDateTime reportTimestamp;
+    private String reportTimestamp; // no reliable way of Locale-sensitive parsing
     private Results results;
     private List<String> sourceDirectories = new ArrayList<>();
 

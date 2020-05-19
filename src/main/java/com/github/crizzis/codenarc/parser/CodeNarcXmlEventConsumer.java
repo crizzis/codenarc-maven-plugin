@@ -15,11 +15,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static java.time.format.FormatStyle.MEDIUM;
 
 @SuppressWarnings("unchecked")
 class CodeNarcXmlEventConsumer {
@@ -162,9 +158,8 @@ class CodeNarcXmlEventConsumer {
         return getAttributeValue(startElement, "version");
     }
 
-    private LocalDateTime getTimestamp(StartElement startElement) {
-        return LocalDateTime.parse(getAttributeValue(startElement, "timestamp"),
-                DateTimeFormatter.ofLocalizedDateTime(MEDIUM));
+    private String getTimestamp(StartElement startElement) {
+        return getAttributeValue(startElement, "timestamp");
     }
 
     private String getTitle(StartElement startElement) {

@@ -19,14 +19,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static com.github.crizzis.codenarc.ResultsSamples.*;
-import static java.time.Month.JANUARY;
 import static java.util.Collections.emptyList;
 import static java.util.Locale.ENGLISH;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -82,13 +78,12 @@ class CodeNarcReportGeneratorTest {
 
     private static CodeNarcAnalysis defaultAnalysis(List<String> sourceDirectories,
                                              Results results) {
-        return analysis("sample-mail-receiver", "0.27.0",
-                LocalDateTime.of(LocalDate.of(2020, JANUARY, 3), LocalTime.of(10, 28, 35)), sourceDirectories, results);
+        return analysis("sample-mail-receiver", "0.27.0", "Jan 03, 2020, 10:28:35 AM", sourceDirectories, results);
     }
 
     private static CodeNarcAnalysis analysis(String title,
                                       String version,
-                                      LocalDateTime timestamp,
+                                      String timestamp,
                                       List<String> sourceDirectories,
                                       Results results) {
         CodeNarcAnalysis analysis = new CodeNarcAnalysis();
