@@ -7,20 +7,29 @@ import org.codenarc.results.Results;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
-class PackageSummaryTableRenderer implements TableRenderer<Results> {
+class PackageSummaryTableRenderer implements TableRenderer<Results>, Localizable {
 
-    private static final String DEFAULT_PACKAGE_NAME = "(default package)";
     private static final int PRIORITY_ONE = 1;
     private static final int PRIORITY_TWO = 2;
     private static final int PRIORITY_THREE = 3;
+
+    private final String defaultPackageName;
 
     @Getter
     private final List<String> headers;
 
     PackageSummaryTableRenderer(Locale locale) {
-        this.headers = List.of("Package", "Files with Violations", "Total Violations",
-                "Priority 1 Violations", "Priority 2 Violations", "Priority 3 Violations");
+        ResourceBundle messages = getCodeNarcMessages(locale);
+        this.defaultPackageName = messages.getString("report.codenarc.default_package");
+        this.headers = List.of(
+                messages.getString("report.codenarc.package"),
+                messages.getString("report.codenarc.files_with_violations"),
+                messages.getString("report.codenarc.total_violations"),
+                messages.getString("report.codenarc.priority_one_violations"),
+                messages.getString("report.codenarc.priority_two_violations"),
+                messages.getString("report.codenarc.priority_three_violations"));
     }
 
     @Override
@@ -50,6 +59,6 @@ class PackageSummaryTableRenderer implements TableRenderer<Results> {
     }
 
     private String getPackageName(Results element) {
-        return StringUtils.isBlank(element.getPath()) ? DEFAULT_PACKAGE_NAME : element.getPath().replaceAll("/", ".");
+        return StringUtils.isBlank(element.getPath()) ? defaultPackageName : element.getPath().replaceAll("/", ".");
     }
 }

@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 import static com.github.crizzis.codenarc.report.ResultWalker.*;
@@ -23,7 +22,7 @@ import static com.github.crizzis.codenarc.report.ResultWalker.*;
  */
 @Named
 @Singleton
-public class CodeNarcReportGenerator {
+public class CodeNarcReportGenerator implements Localizable {
 
     private static final int MAX_PRIORITY = 3;
 
@@ -40,7 +39,7 @@ public class CodeNarcReportGenerator {
 
     private void generateHead(CodeNarcAnalysis input, Sink sink, Locale locale) {
         sink.title();
-        sink.text("CodeNarc Report");
+        sink.text(getCodeNarcMessages(locale).getString("report.codenarc.name"));
         sink.title_();
     }
 
@@ -55,27 +54,27 @@ public class CodeNarcReportGenerator {
 
     private void generateHeading(CodeNarcAnalysis input, Sink sink, Locale locale) {
         sink.section1();
-        printSectionTitle(sink, "CodeNarc Report");
-        printParagraph(sink, "The following document contains the results of CodeNarc analysis");
-        printKeyValue(sink, "CodeNarc Version", input.getCodeNarcVersion());
-        printKeyValue(sink, "Report time", input.getReportTimestamp());
+        printSectionTitle(sink, getCodeNarcMessages(locale).getString("report.codenarc.name"));
+        printParagraph(sink, getCodeNarcMessages(locale).getString("report.codenarc.content_description"));
+        printKeyValue(sink, getCodeNarcMessages(locale).getString("report.codenarc.version_caption"), input.getCodeNarcVersion());
+        printKeyValue(sink, getCodeNarcMessages(locale).getString("report.codenarc.generation_time_caption"), input.getReportTimestamp());
         sink.section1_();
     }
 
     private void generateSummary(CodeNarcAnalysis input, Sink sink, Locale locale) {
         sink.section1();
-        printSectionTitle(sink, "Summary");
+        printSectionTitle(sink, getCodeNarcMessages(locale).getString("report.codenarc.summary"));
         printTable(sink, new SummaryTableRenderer(locale), List.of((DirectoryResults) input.getResults()));
         sink.section1_();
     }
 
     private void generatePackageSummary(CodeNarcAnalysis input, Sink sink, Locale locale) {
         sink.section1();
-        printSectionTitle(sink, "Package Summary");
+        printSectionTitle(sink, getCodeNarcMessages(locale).getString("report.codenarc.package_summary"));
         Iterator<String> sourceRootDirectories = input.getSourceDirectories().iterator();
         input.getResults().getChildren().forEach(sourceRoot -> {
             if (sourceRootDirectories.hasNext()) {
-                printSourceDirectoryTitle(sink, sourceRootDirectories.next());
+                printSourceDirectoryTitle(sink, sourceRootDirectories.next(), locale);
             }
             printResultTable(sink, new PackageSummaryTableRenderer(locale), (Results) sourceRoot, DIRECTORIES_WITH_FILES);
         });
@@ -84,7 +83,7 @@ public class CodeNarcReportGenerator {
 
     private void generateFileViolations(CodeNarcAnalysis input, Sink sink, Locale locale) {
         sink.section1();
-        printSectionTitle(sink, "Files");
+        printSectionTitle(sink, getCodeNarcMessages(locale).getString("report.codenarc.files"));
         final Iterator<String> sourceRootDirectories = input.getSourceDirectories().iterator();
         final CurrentPackageContext context = new CurrentPackageContext();
         resultWalker.walk(input.getResults(), DIRECTORIES_WITH_FILES.or(FILES).or(SOURCE_ROOTS), results -> {
@@ -93,7 +92,7 @@ public class CodeNarcReportGenerator {
                 printTable(sink, new ViolationTableRenderer(locale), results.getViolations());
             } else {
                 if (isSourceRoot(results) && sourceRootDirectories.hasNext()) {
-                    printSourceDirectoryTitle(sink, sourceRootDirectories.next());
+                    printSourceDirectoryTitle(sink, sourceRootDirectories.next(), locale);
                 }
                 context.setCurrentPackage(results);
             }
@@ -107,9 +106,9 @@ public class CodeNarcReportGenerator {
         sink.sectionTitle1_();
     }
 
-    private void printSourceDirectoryTitle(Sink sink, String sourceDirectory) {
+    private void printSourceDirectoryTitle(Sink sink, String sourceDirectory, Locale locale) {
         sink.sectionTitle2();
-        sink.text("Source Directory" + ": ");
+        sink.text(getCodeNarcMessages(locale).getString("report.codenarc.source_directory") + ":");
         sink.italic();
         sink.text(sourceDirectory);
         sink.italic_();
@@ -155,10 +154,6 @@ public class CodeNarcReportGenerator {
 
     private boolean isSourceRoot(Results results) {
         return results.getPath().isBlank();
-    }
-
-    private ResourceBundle getCodeNarcMessages(Locale locale) {
-        return ResourceBundle.getBundle("codenarc-messages", locale);
     }
 
     @Getter

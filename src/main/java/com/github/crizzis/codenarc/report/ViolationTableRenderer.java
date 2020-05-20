@@ -6,14 +6,20 @@ import org.codenarc.rule.Violation;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
-class ViolationTableRenderer implements TableRenderer<Violation> {
+class ViolationTableRenderer implements TableRenderer<Violation>, Localizable {
 
     @Getter
     private final List<String> headers;
 
     ViolationTableRenderer(Locale locale) {
-        this.headers = List.of("Rule Name", "Priority", "Line", "Source Line / Message");
+        ResourceBundle messages = getCodeNarcMessages(locale);
+        this.headers = List.of(
+                messages.getString("report.codenarc.rule_name"),
+                messages.getString("report.codenarc.priority"),
+                messages.getString("report.codenarc.line"),
+                messages.getString("report.codenarc.source_line_message"));
     }
 
     @Override

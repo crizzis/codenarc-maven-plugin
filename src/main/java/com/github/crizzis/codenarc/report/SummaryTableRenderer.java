@@ -6,8 +6,9 @@ import org.codenarc.results.DirectoryResults;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
-class SummaryTableRenderer implements TableRenderer<DirectoryResults> {
+class SummaryTableRenderer implements TableRenderer<DirectoryResults>, Localizable {
 
     private static final int PRIORITY_ONE = 1;
     private static final int PRIORITY_TWO = 2;
@@ -17,8 +18,14 @@ class SummaryTableRenderer implements TableRenderer<DirectoryResults> {
     private final List<String> headers;
 
     SummaryTableRenderer(Locale locale) {
-        this.headers = List.of("Total Files", "Files with Violations", "Total Violations",
-                "Priority 1 Violations", "Priority 2 Violations", "Priority 3 Violations");
+        ResourceBundle messages = getCodeNarcMessages(locale);
+        this.headers = List.of(
+                messages.getString("report.codenarc.total_files"),
+                messages.getString("report.codenarc.files_with_violations"),
+                messages.getString("report.codenarc.total_violations"),
+                messages.getString("report.codenarc.priority_one_violations"),
+                messages.getString("report.codenarc.priority_two_violations"),
+                messages.getString("report.codenarc.priority_three_violations"));
     }
 
     @Override
