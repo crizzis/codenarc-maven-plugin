@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>codenarc-custom-config</artifactId>
+    <version>0.0.1</version>
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>test-parent</artifactId>
+        <version>0.0.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.crizzis</groupId>
+                <artifactId>codenarc-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>verify-custom-output-directory-rules-includes-and-excludes</id>
+                        <goals>
+                            <goal>codenarc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <xmlOutputDirectory>${project.build.directory}/reports</xmlOutputDirectory>
+                    <includes>
+                        <include>**/*Included.groovy</include>
+                        <include>**/*AlsoIncluded.groovy</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*Excluded.groovy</exclude>
+                    </excludes>
+                    <sources>
+                        <fileSet>
+                            <directory>src/main/groovy</directory>
+                        </fileSet>
+                        <fileSet>
+                            <directory>src/main/additional</directory>
+                        </fileSet>
+                    </sources>
+                    <includeTests>true</includeTests>
+                    <defaultRuleSets>
+                        <defaultRuleSet>rulesets/formatting.xml</defaultRuleSet>
+                    </defaultRuleSets>
+                    <additionalRuleSets>
+                        <additionalRuleSet>custom.xml</additionalRuleSet>
+                    </additionalRuleSets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

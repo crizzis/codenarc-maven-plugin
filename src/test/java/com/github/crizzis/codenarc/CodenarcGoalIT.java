@@ -18,8 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasXPath;
+import static org.hamcrest.Matchers.*;
 
 @DefaultLocale("en-US")
 @DisplayNameGeneration(Phrasify.class)
@@ -50,6 +49,26 @@ public class CodenarcGoalIT {
         assertThat(codenarcHtml, hasFileViolation("com/example/TestClassWithSomeViolations.groovy", "DuplicateMapKey"));
         assertThat(codenarcHtml, hasFileViolation("com/example/nestedpackage/TestClassWithSomeMoreViolations.groovy", "DeadCode"));
         assertThat(codenarcHtml, hasFileViolation("com/example/nestedpackage/TestClassWithSomeMoreViolations.groovy", "EmptyIfStatement"));
+    }
+
+    @MavenProjectTest("/projects/codenarc-custom-config")
+    void codenarcCustomConfig_shouldSucceed(Verifier verifier, @ProjectRoot File projectRoot) throws Exception {
+        //when
+        verifier.executeGoal("codenarc:codenarc");
+
+        //then
+        verifier.verifyErrorFreeLog();
+        verifier.assertFilePresent("target/reports/CodeNarc.xml");
+        verifier.assertFilePresent("target/site/codenarc.html");
+        Document codenarcHtml = parseXml(projectRoot, "target/site/codenarc.html");
+        assertThat(codenarcHtml, hasSourceDirectory("src/main/additional"));
+        assertThat(codenarcHtml, hasFileViolation("com/example/TestClassIncluded.groovy", "ClassEndsWithBlankLine"));
+        assertThat(codenarcHtml, hasFileViolation("com/example/TestClassWithSomeViolationsIncluded.groovy", "SpaceAroundMapEntryColon"));
+        assertThat(codenarcHtml, not(hasFileViolation("com/example/nestedpackage/TestClassWithSomeMoreViolationsExcluded.groovy", "DeadCode")));
+    }
+
+    private Matcher<Node> hasSourceDirectory(String sourceDirectoryPath) {
+        return hasXPath("//h3[text() = 'Source Directory: ']/i[text() = '" + sourceDirectoryPath + "']");
     }
 
     private Matcher<Node> hasSection(int sectionIndex, String caption) {

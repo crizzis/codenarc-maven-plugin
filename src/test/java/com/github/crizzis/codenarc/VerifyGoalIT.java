@@ -78,6 +78,20 @@ class VerifyGoalIT {
         assertThat(codeNarcReport, not(includesFile("TestClassWithSomeMoreViolationsExcluded.groovy")));
     }
 
+    @MavenProjectTest("/projects/verify-custom-config")
+    void verifyCustomConfig_shouldNotRun_whenExecutionSkipped(Verifier verifier) throws Exception {
+        //given
+        verifier.addCliOption("-P profile-with-codenarc-verify-disabled");
+
+        //when
+        verifier.executeGoal("verify");
+
+        //then
+        verifier.verifyErrorFreeLog();
+        verifier.verifyTextInLog("Plugin execution skipped");
+        verifier.assertFileNotPresent("target/reports/CodeNarc.xml");
+    }
+
     @MavenProjectTest("/projects/verify-preexisting-report")
     void verifyPreexistingReport_shouldConsumePreexistingReportCorrectly(Verifier verifier, @ProjectRoot File projectRoot)
             throws Exception {
