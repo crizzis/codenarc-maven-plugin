@@ -2,6 +2,7 @@ package com.github.crizzis.codenarc.report;
 
 import com.github.crizzis.codenarc.CodeNarcVerifyMojo;
 import com.github.crizzis.codenarc.parser.CodeNarcAnalysis;
+import com.github.crizzis.codenarc.util.MinimalDocumentBuilderFactory;
 import com.github.crizzis.codenarc.util.Phrasify;
 import com.github.crizzis.codenarc.util.SinkMock;
 import org.apache.commons.io.IOUtils;
@@ -44,7 +45,7 @@ class CodeNarcReportGeneratorTest {
 
 
 
-    private static final DocumentBuilderFactory XML_FACTORY = DocumentBuilderFactory.newDefaultInstance();
+    private static final DocumentBuilderFactory XML_FACTORY = MinimalDocumentBuilderFactory.newMinimalInstance();;
 
     private DocumentBuilder xmlBuilder = XML_FACTORY.newDocumentBuilder();
     private CodeNarcReportGenerator generator = new CodeNarcReportGenerator();

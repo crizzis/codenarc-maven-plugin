@@ -25,6 +25,7 @@ import static com.github.crizzis.codenarc.report.ResultWalker.*;
 public class CodeNarcReportGenerator implements Localizable {
 
     private static final int MAX_PRIORITY = 3;
+    private static final String KEY_VALUE_SEPARATOR = ": ";
 
     private final ResultWalker resultWalker = new ResultWalker();
 
@@ -108,7 +109,7 @@ public class CodeNarcReportGenerator implements Localizable {
 
     private void printSourceDirectoryTitle(Sink sink, String sourceDirectory, Locale locale) {
         sink.sectionTitle2();
-        sink.text(getCodeNarcMessages(locale).getString("report.codenarc.source_directory") + ":");
+        sink.text(getCodeNarcMessages(locale).getString("report.codenarc.source_directory") + KEY_VALUE_SEPARATOR);
         sink.italic();
         sink.text(sourceDirectory);
         sink.italic_();
@@ -123,7 +124,7 @@ public class CodeNarcReportGenerator implements Localizable {
 
     private void printKeyValue(Sink sink, String key, String value) {
         sink.paragraph();
-        sink.text(key + ": ");
+        sink.text(key + KEY_VALUE_SEPARATOR);
         sink.italic();
         sink.text(value);
         sink.italic_();

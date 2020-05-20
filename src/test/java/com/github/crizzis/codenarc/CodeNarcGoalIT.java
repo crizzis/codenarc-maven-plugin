@@ -1,6 +1,7 @@
 package com.github.crizzis.codenarc;
 
 import com.github.crizzis.codenarc.util.MavenProjectTest;
+import com.github.crizzis.codenarc.util.MinimalDocumentBuilderFactory;
 import com.github.crizzis.codenarc.util.Phrasify;
 import com.github.crizzis.codenarc.util.ProjectRoot;
 import org.apache.maven.it.Verifier;
@@ -22,13 +23,13 @@ import static org.hamcrest.Matchers.*;
 
 @DefaultLocale("en-US")
 @DisplayNameGeneration(Phrasify.class)
-public class CodenarcGoalIT {
+public class CodeNarcGoalIT {
 
-    private static final DocumentBuilderFactory XML_FACTORY = DocumentBuilderFactory.newDefaultInstance();
+    private static final DocumentBuilderFactory XML_FACTORY = MinimalDocumentBuilderFactory.newMinimalInstance();
 
     private DocumentBuilder xmlBuilder = XML_FACTORY.newDocumentBuilder();
 
-    public CodenarcGoalIT() throws ParserConfigurationException {
+    public CodeNarcGoalIT() throws ParserConfigurationException {
     }
 
     @MavenProjectTest("/projects/codenarc-minimal-config")
