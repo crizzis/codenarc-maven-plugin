@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <body>
+        <menu name="Overview">
+            <item name="Introduction" href="index.html"/>
+            <item name="Goals" href="plugin-info.html"/>
+            <item name="Usage" href="usage.html"/>
+            <item name="Sample Generated Report" href="sample/codenarc.html"/>
+            <item name="FAQ" href="faq.html"/>
+        </menu>
+
+        <menu name="Examples">
+            <item name="Custom Rule Sets" href="examples/custom_rule_sets.html"/>
+            <item name="Including/Excluding Files" href="examples/including_excluding_files.html"/>
+            <item name="Custom Source Roots" href="examples/custom_source_roots.html"/>
+            <item name="Separate Steps for Analysis and Failing the Build" href="examples/separate_steps_for_analysis_and_failing_the_build.html"/>
+        </menu>
+
+        <menu ref="reports" />
+    </body>
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.9</version>
+    </skin>
+    <custom>
+        <fluidoSkin>
+            <gitHub>
+                <projectId>crizzis/codenarc-maven-plugin</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
+</project>

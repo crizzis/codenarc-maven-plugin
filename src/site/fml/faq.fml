@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs id="FAQ" title="Frequently Asked Questions">
+    <part id="Frequently Asked Questions">
+        <faq id="codenarc_version">
+            <question>How do I use a different version of CodeNarc?</question>
+            <answer>
+                <p>
+                    I will try to do some housekeeping around the plugin from time to time, bumping up the CodeNarc version.
+                    In the meantime, if you desperately need to use a different version of CodeNarc (e.g. an urgent bug fix),
+                    you may try to update the dependency yourself using the <code>&lt;dependencies&gt;</code> section of the
+                    <code>&lt;plugin&gt;</code> configuration.
+                </p>
+            </answer>
+        </faq>
+        <faq id="codenarc_properties">
+            <question>Can I use <code>codenarc.properties</code>?</question>
+            <answer>
+                <p>Sure, knock yourself out. Just put them in the resource root directory of your project. </p>
+            </answer>
+        </faq>
+    </part>
+</faqs>
