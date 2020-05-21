@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.github.crizzis.codenarc"},{"l":"io.github.crizzis.codenarc.integration"},{"l":"io.github.crizzis.codenarc.parser"},{"l":"io.github.crizzis.codenarc.report"},{"l":"io.github.crizzis.codenarc.runner"}]
