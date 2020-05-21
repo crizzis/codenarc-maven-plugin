@@ -14,7 +14,7 @@
     <reporting>
         <plugins>
             <plugin>
-                <groupId>com.github.crizzis</groupId>
+                <groupId>io.github.crizzis</groupId>
                 <artifactId>codenarc-maven-plugin</artifactId>
             </plugin>
         </plugins>

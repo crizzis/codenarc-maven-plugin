@@ -14,7 +14,7 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.crizzis</groupId>
+                <groupId>io.github.crizzis</groupId>
                 <artifactId>codenarc-maven-plugin</artifactId>
                 <executions>
                     <execution>
@@ -62,7 +62,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.github.crizzis</groupId>
+                        <groupId>io.github.crizzis</groupId>
                         <artifactId>codenarc-maven-plugin</artifactId>
                         <configuration>
                             <skip>true</skip>

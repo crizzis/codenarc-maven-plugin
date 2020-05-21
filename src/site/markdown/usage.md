@@ -17,7 +17,7 @@ For CodeNarc Maven Plugin to serve as a quality gate in the build process, add a
     <plugins>
         ...
         <plugin>
-            <groupId>com.github.crizzis</groupId>
+            <groupId>io.github.crizzis</groupId>
             <artifactId>codenarc-maven-plugin</artifactId>
             <version>0.1</version>
             <executions>
@@ -50,7 +50,7 @@ The CodeNarc Plugin can also be used for reporting: simply add the plugin defini
     <plugins>
         ...
         <plugin>
-            <groupId>com.github.crizzis</groupId>
+            <groupId>io.github.crizzis</groupId>
             <artifactId>codenarc-maven-plugin</artifactId>
             <version>0.1</version>
         </plugin>
@@ -70,7 +70,7 @@ Like with any other reporting plugin, the reporting goal can also be used in sta
 <build>
     <plugins>
         <plugin>
-            <groupId>com.github.crizzis</groupId>
+            <groupId>io.github.crizzis</groupId>
             <artifactId>codenarc-maven-plugin</artifactId>
             <executions>
                 <execution>

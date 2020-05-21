@@ -9,7 +9,7 @@ If you want to include test sources in the analysis, use:
     <plugins>
         ...
         <plugin>
-            <groupId>com.github.crizzis</groupId>
+            <groupId>io.github.crizzis</groupId>
             <artifactId>codenarc-maven-plugin</artifactId>
             <version>0.1</version>
             <executions>
@@ -32,7 +32,7 @@ To include/exclude specific files, use the `<includes>`/`<excludes>` property wi
 
 ```xml
 <plugin>
-    <groupId>com.github.crizzis</groupId>
+    <groupId>io.github.crizzis</groupId>
     <artifactId>codenarc-maven-plugin</artifactId>
     <version>0.1</version>
     <executions>

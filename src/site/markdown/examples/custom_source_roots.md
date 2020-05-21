@@ -5,7 +5,7 @@ If you need to include additional sources in the analysis, or use a nonstandard 
 
 ```xml
 <plugin>
-    <groupId>com.github.crizzis</groupId>
+    <groupId>io.github.crizzis</groupId>
     <artifactId>codenarc-maven-plugin</artifactId>
     <executions>
         <execution>

@@ -8,7 +8,7 @@ You can also use `<additionalRuleSets>` to specify user-defined rule sets. The t
 
 ```xml
 <plugin>
-    <groupId>com.github.crizzis</groupId>
+    <groupId>io.github.crizzis</groupId>
     <artifactId>codenarc-maven-plugin</artifactId>
     <version>0.1</version>
     <executions>

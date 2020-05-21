@@ -14,7 +14,7 @@ For example, to perform CodeNarc analysis during the `process-resources` phase b
     <plugins>
         ...
         <plugin>
-            <groupId>com.github.crizzis</groupId>
+            <groupId>io.github.crizzis</groupId>
             <artifactId>codenarc-maven-plugin</artifactId>
             <version>0.1</version>
             <executions>
