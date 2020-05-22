@@ -3,6 +3,7 @@ The plugin can be used either as a quality gate in the build process, a reportin
 
 ### Default Settings
 By default, the plugin assumes that:
+
 * `src/main/groovy` is the compile source root (by default, compile sources are **included** in the analysis)
 * `src/test/groovy` is the test source root (by default, test sources are **excluded** from the analysis)
 * Groovy sources follow the `**/*.groovy` naming convention
