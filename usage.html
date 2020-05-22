@@ -34,7 +34,7 @@
           <ul class="breadcrumb">
         <li id="publishDate">Last Published: 2020-05-22<span class="divider">|</span>
 </li>
-          <li id="projectVersion">Version: 0.1-SNAPSHOT</li>
+          <li id="projectVersion">Version: 0.1</li>
           </ul>
         </div>
       </header>
@@ -73,7 +73,14 @@
 <h2><a name="Usage"></a>Usage</h2>
 <p>The plugin can be used either as a quality gate in the build process, a reporting plugin in the <code>site</code> lifecycle, or as a standalone HTML report generator. Regardless of whether the plugin is configured to produce an HTML report or not, CodeNarc&#x2019;s standard <code>CodeNarc.xml</code> will be generated in the <i>target</i> directory by default.</p><section>
 <h3><a name="Default_Settings"></a>Default Settings</h3>
-<p>By default, the plugin assumes that: * <code>src/main/groovy</code> is the compile source root (by default, compile sources are <b>included</b> in the analysis) * <code>src/test/groovy</code> is the test source root (by default, test sources are <b>excluded</b> from the analysis) * Groovy sources follow the <code>**/*.groovy</code> naming convention * The scope of the analysis should be limited to the <a class="externalLink" href="https://codenarc.github.io/CodeNarc/codenarc-rules-basic.html"><i>Basic</i></a>, <a class="externalLink" href="https://codenarc.github.io/CodeNarc/codenarc-rules-exceptions.html"><i>Exceptions</i></a>, and <a class="externalLink" href="https://codenarc.github.io/CodeNarc/codenarc-rules-imports.html"><i>Imports</i></a> rule sets</p></section><section>
+<p>By default, the plugin assumes that:</p>
+<ul>
+
+<li><code>src/main/groovy</code> is the compile source root (by default, compile sources are <b>included</b> in the analysis)</li>
+<li><code>src/test/groovy</code> is the test source root (by default, test sources are <b>excluded</b> from the analysis)</li>
+<li>Groovy sources follow the <code>**/*.groovy</code> naming convention</li>
+<li>The scope of the analysis should be limited to the <a class="externalLink" href="https://codenarc.github.io/CodeNarc/codenarc-rules-basic.html"><i>Basic</i></a>, <a class="externalLink" href="https://codenarc.github.io/CodeNarc/codenarc-rules-exceptions.html"><i>Exceptions</i></a>, and <a class="externalLink" href="https://codenarc.github.io/CodeNarc/codenarc-rules-imports.html"><i>Imports</i></a> rule sets</li>
+</ul></section><section>
 <h3><a name="Verifying_Code_Quality_as_Part_of_the_Build_Process"></a>Verifying Code Quality as Part of the Build Process</h3>
 <p>For CodeNarc Maven Plugin to serve as a quality gate in the build process, add an execution of the <code>[codenarc:verify](verify-mojo.html)</code> goal in the <code>&lt;build&gt;</code> section of your <code>pom.xml</code>:</p>
 
